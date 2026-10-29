@@ -865,12 +865,7 @@
     // 동일 폴더(./) 내 캐릭터 시트 및 4대 상점 이미지 자동 로드
     function autoLoadSameFolderImages() {
       const charCandidates = [
-        'character_sheet.png',
-        'character_sheet.jpg',
-        '11월 피부개선 꿀피부생성상점 캐릭터 시트1.png',
-        '11월 피부개선 꿀피부생성상점 캐릭터 시트1.jpg',
-        '11월 피부개선 꿀피부생성상점 캐릭터 시트.png',
-        '11월 피부개선 꿀피부생성상점 캐릭터 시트.jpg'
+        'character_sheet.png'
       ];
       tryLoadCandidates(charCandidates, (img, src) => {
         processCharacterSheetImage(img, src);
@@ -879,19 +874,19 @@
       const shopCandidatesMap = [
         {
           key: 'shopTexture',
-          candidates: ['shop1.png', 'shop1.jpg', '1_상점_피부결개선.png', '1_상점_피부결개선.jpg']
+          candidates: ['shop1.png']
         },
         {
           key: 'shopMoisture',
-          candidates: ['shop2.png', 'shop2.jpg', '2_상점_수분개선.png', '2_상점_수분개선.jpg']
+          candidates: ['shop2.png']
         },
         {
           key: 'shopElasticity',
-          candidates: ['shop3.png', 'shop3.jpg', '3.상점_탄력개선.png', '3.상점_탄력개선.jpg', '3_상점_탄력개선.png', '3_상점_탄력개선.jpg']
+          candidates: ['shop3.png']
         },
         {
           key: 'shopWhitening',
-          candidates: ['shop4.png', 'shop4.jpg', '4.상점_미백.png', '4.상점_미백.jpg', '4_상점_미백.png', '4_상점_미백.jpg']
+          candidates: ['shop4.png']
         }
       ];
 
