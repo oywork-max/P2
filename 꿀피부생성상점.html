@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>11월 꿀피부생성상점 🍃</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            acCream: '#F8F2E4',
+            acBorder: '#DFCFAF',
+            acPill: '#FDE47F',
+            acTitle: '#4A3423',
+            acSub: '#8C6D46',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      background-color: #EFE8D8;
+      color: #4A3423;
+      font-family: 'Pretendard', sans-serif;
+    }
+
+    /* 동물의 숲 잔디 & 마을 파스텔 배경 */
+    .village-bg {
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255, 253, 247, 0.92) 0%, rgba(242, 248, 232, 0.88) 55%, rgba(226, 240, 209, 0.92) 100%),
+        repeating-linear-gradient(45deg, #e7f2da 0px, #e7f2da 24px, #dff0ce 24px, #dff0ce 48px);
+    }
+
+    /* ==========================================================
+       1. 투명 배경 캐릭터 애니메이션 (배경 박스 없이 웹앱 배경 투과)
+    ========================================================== */
+    @keyframes idleFloat {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-7px) scale(1.015); }
+    }
+    .animate-idle {
+      animation: idleFloat 2.6s ease-in-out infinite;
+    }
+
+    @keyframes walkCycle {
+      0%, 100% { transform: translateY(0px) rotate(-4deg); }
+      25% { transform: translateY(-14px) rotate(0deg); }
+      50% { transform: translateY(0px) rotate(4deg); }
+      75% { transform: translateY(-14px) rotate(0deg); }
+    }
+    .animate-walk {
+      animation: walkCycle 0.42s infinite ease-in-out;
+    }
+
+    @keyframes speechBob {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    .speech-bob {
+      animation: speechBob 2.4s ease-in-out infinite;
+    }
+
+    @keyframes leafFall {
+      0% {
+        transform: translate3d(-10vw, -10vh, 0) rotate(0deg);
+        opacity: 0;
+      }
+      15% { opacity: 0.85; }
+      85% { opacity: 0.85; }
+      100% {
+        transform: translate3d(105vw, 95vh, 0) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    .falling-leaf {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      animation: leafFall linear infinite;
+    }
+
+    /* ==========================================================
+       2. 상품 블럭 카드 (예시 이미지 image_010aa5.png 100% 동일 구현)
+          - 이미지 없음
+          - 크림색 배경(#F8F2E4), 라운드 보더(#DFCFAF)
+          - 상단 노란 캡슐 배지(#FDE47F)
+          - 중앙 다크브라운 볼드 상품명(#4A3423)
+          - 하단 트렌드 성분 텍스트(#8C6D46)
+    ========================================================== */
+    .product-text-block {
+      background-color: #F8F2E4;
+      border: 2.5px solid #DFCFAF;
+      border-radius: 22px;
+      padding: 20px 24px;
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, border-color 0.16s ease;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #D3C09A, 0 8px 16px rgba(74, 52, 35, 0.06);
+    }
+    .product-text-block:hover {
+      transform: translateY(-3px);
+      border-color: #C9B286;
+      box-shadow: 0 8px 0 #C9B286, 0 14px 24px rgba(74, 52, 35, 0.12);
+    }
+    .product-text-block:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #C9B286, 0 4px 8px rgba(74, 52, 35, 0.08);
+    }
+
+    .product-pill-badge {
+      display: inline-block;
+      background-color: #FDE47F;
+      color: #4A3423;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 5px 15px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .product-block-title {
+      color: #4A3423;
+      font-weight: 900;
+      font-size: 1.2rem;
+      line-height: 1.38;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      word-break: keep-all;
+    }
+
+    .product-block-subtitle {
+      color: #8C6D46;
+      font-weight: 700;
+      font-size: 0.94rem;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    /* 광장 4대 고민 선택 버튼 */
+    .plaza-choice-btn {
+      background: rgba(255, 253, 248, 0.92);
+      backdrop-filter: blur(8px);
+      border: 3px solid #D4B489;
+      border-radius: 26px;
+      box-shadow: 0 6px 0 #B59264, 0 10px 20px rgba(74, 52, 35, 0.1);
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .plaza-choice-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 0 #B59264, 0 16px 26px rgba(74, 52, 35, 0.15);
+    }
+    .plaza-choice-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #B59264;
+    }
+
+    /* 캐릭터 이미지 투명 합성 효과 */
+    .transparent-char-img {
+      background: transparent !important;
+      filter: drop-shadow(0 10px 14px rgba(74, 52, 35, 0.18));
+      object-fit: contain;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #C29B65; border-radius: 9999px; }
+  </style>
+</head>
+<body class="village-bg min-h-screen flex flex-col">
+
+  <!-- 흩날리는 낙엽 & 꽃잎 컨테이너 -->
+  <div id="leaves-container" class="fixed inset-0 pointer-events-none overflow-hidden z-10"></div>
+
+  <!-- ==========================================================
+       상단 헤더 (사운드 컨트롤 + 비교분석 모달 버튼만 깔끔하게 유지)
+  =========================================================== -->
+  <header class="sticky top-0 z-40 px-3 py-2.5 bg-[#F8F2E4]/95 backdrop-blur-md border-b-2 border-[#DFCFAF] shadow-sm">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      
+      <!-- 좌측 로고 & 홈 이동 -->
+      <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2.5 cursor-pointer" onclick="returnToSquare()">
+          <div class="w-10 h-10 flex items-center justify-center">
+            <img id="header-mini-char" class="w-10 h-10 transparent-char-img" alt="캐릭터 아이콘">
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-black text-sm sm:text-base text-[#4A3423] tracking-tight">🍃 11월 꿀피부생성상점</span>
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423]">36종 큐레이션</span>
+            </div>
+            <p class="text-[11px] text-[#8C6D46] font-bold">“오늘도 예쁜 너를 위해 조금 더, :)”</p>
+          </div>
+        </div>
+
+        <button id="btn-back-square" onclick="returnToSquare()" class="hidden px-3 py-1.5 rounded-full bg-[#F497B6] hover:bg-[#e582a3] text-white font-extrabold text-xs border-2 border-[#D66B8E] shadow-[0_3px_0_#B54E70] active:translate-y-0.5 items-center gap-1 transition">
+          <i class="fa-solid fa-house-chimney"></i>
+          <span>🏠 광장으로</span>
+        </button>
+      </div>
+
+      <!-- 우측 툴바: 효과음 미리듣기 & 토글 + 비교분석 버튼 -->
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <button onclick="SoundFX.playWind()" class="px-2.5 py-1.5 rounded-full bg-[#FFFDF7] hover:bg-[#FDE47F]/40 text-[#4A3423] font-extrabold text-[11px] border-2 border-[#DFCFAF] shadow-[0_2px_0_#C9B286] active:translate-y-0.5 transition">
+          🍃 낙엽바람
+        </button>
+        <button onclick="SoundFX.playFootstepSequence(4)" class="px-2.5 py-1.5 rounded-full bg-[#FFFDF7] hover:bg-[#FDE47F]/40 text-[#4A3423] font-extrabold text-[11px] border-2 border-[#DFCFAF] shadow-[0_2px_0_#C9B286] active:translate-y-0.5 transition">
+          👟 저벅저벅
+        </button>
+        <button onclick="SoundFX.playDoorAndBell()" class="px-2.5 py-1.5 rounded-full bg-[#FFFDF7] hover:bg-[#FDE47F]/40 text-[#4A3423] font-extrabold text-[11px] border-2 border-[#DFCFAF] shadow-[0_2px_0_#C9B286] active:translate-y-0.5 transition">
+          🔔 문+딸랑종
+        </button>
+
+        <button id="btn-sound-toggle" onclick="SoundFX.toggleMute()" class="px-3 py-1.5 rounded-full bg-[#78C257] text-white font-extrabold text-xs border-2 border-[#559B38] shadow-[0_3px_0_#3E7A25] active:translate-y-0.5 flex items-center gap-1 transition">
+          <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+          <span id="sound-label">효과음 ON</span>
+        </button>
+
+        <button onclick="openComparisonModal()" class="px-3 py-1.5 rounded-full bg-[#4A3423] hover:bg-[#3A281B] text-[#FDE47F] font-extrabold text-xs border-2 border-[#3A281B] shadow-[0_3px_0_#24170E] active:translate-y-0.5 flex items-center gap-1 transition">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>📊 비교분석</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================
+       PAGE 1: 첫 번째 광장 페이지 ("지금 나의 고민은?" + 투명 캐릭터 + 4가지 선택지)
+  =========================================================== -->
+  <main id="page-square" class="flex-1 flex flex-col justify-between max-w-4xl w-full mx-auto px-4 py-4 sm:py-6 relative z-20">
+    
+    <!-- 상단: 말풍선 & 투명 배경 캐릭터 무대 -->
+    <section class="flex flex-col items-center justify-center my-auto py-2">
+      
+      <!-- "지금 나의 고민은?" 말풍선 -->
+      <div class="relative bg-[#F8F2E4] border-3 border-[#DFCFAF] rounded-[28px] px-6 py-4 shadow-[0_6px_0_#D3C09A,0_12px_24px_rgba(74,52,35,0.1)] max-w-md w-full mb-2 speech-bob text-center">
+        <span class="inline-block px-3 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-xs mb-1.5">
+          ✨ 뷰티로 행복충전중 ♡
+        </span>
+        <h1 id="main-speech-title" class="text-xl sm:text-2xl font-black text-[#4A3423] tracking-tight">
+          “지금 나의 고민은?”
+        </h1>
+        <p id="main-speech-sub" class="text-xs sm:text-sm font-bold text-[#8C6D46] mt-1">
+          아래 4가지 고민 중 하나를 누르면 상점으로 걸어갑니다!
+        </p>
+        <!-- 말풍선 꼬리 -->
+        <div class="w-4 h-4 bg-[#F8F2E4] border-r-2 border-b-2 border-[#DFCFAF] rotate-45 absolute -bottom-2 left-1/2 -translate-x-1/2"></div>
+      </div>
+
+      <!-- 투명 배경 캐릭터 & 산책로 무대 (배경 박스가 웹앱 배경을 가리지 않음!) -->
+      <div class="relative w-full max-w-lg h-60 sm:h-68 flex items-center justify-center overflow-visible">
+        
+        <!-- 은은한 잔디 산책로 바닥 타원 -->
+        <div class="absolute bottom-3 w-72 sm:w-88 h-10 bg-[#D9E8C4]/70 border-2 border-[#B8D198] rounded-full blur-[0.5px]"></div>
+
+        <!-- 걸어갈 때 우측에 나타나는 목적지 상점 미니 프리뷰 -->
+        <div id="walk-target-shop" class="hidden absolute right-2 sm:right-6 bottom-6 w-32 h-24 sm:w-36 sm:h-28 rounded-2xl border-3 border-[#DFCFAF] bg-[#F8F2E4] shadow-xl overflow-hidden z-10 transition-all duration-300">
+          <img id="walk-target-shop-img" class="w-full h-full object-cover" alt="목적지 상점">
+          <div class="absolute inset-x-0 bottom-0 bg-[#4A3423]/85 text-[#FDE47F] text-[10px] font-black text-center py-0.5">
+            딸랑~ 상점 입장 🚪
+          </div>
+        </div>
+
+        <!-- 중앙 투명 캐릭터 (정면 -> 옆모습 걸어가기 -> 뒷모습) -->
+        <div id="plaza-char-wrap" class="relative z-20 flex flex-col items-center transition-all duration-700 ease-in-out">
+          <div id="footstep-dust" class="hidden absolute bottom-2 -left-6 text-xl animate-ping">💨</div>
+          <img id="plaza-char-img" class="w-44 h-52 sm:w-48 sm:h-56 transparent-char-img animate-idle select-none pointer-events-none" alt="캐릭터">
+          <!-- 발밑 자연스러운 그림자 -->
+          <div class="w-20 h-3.5 bg-[#4A3423]/20 rounded-full -mt-2 blur-[1px]"></div>
+        </div>
+      </div>
+
+      <!-- 효과음 즉시 테스트 버튼 -->
+      <div class="flex items-center justify-center gap-2 mt-1 text-[11px] font-extrabold text-[#8C6D46]">
+        <button onclick="SoundFX.playWind()" class="px-3 py-1 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] hover:bg-[#FDE47F]/40 transition active:scale-95">🍃 낙엽바람</button>
+        <button onclick="SoundFX.playFootstepSequence(4)" class="px-3 py-1 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] hover:bg-[#FDE47F]/40 transition active:scale-95">👟 저벅저벅</button>
+        <button onclick="SoundFX.playDoorAndBell()" class="px-3 py-1 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] hover:bg-[#FDE47F]/40 transition active:scale-95">🔔 문+딸랑종</button>
+      </div>
+    </section>
+
+    <!-- 하단: 4가지 고민 선택지 버튼 (배경을 가리지 않는 투명 캐릭터 아이콘과 함께 구성) -->
+    <section class="w-full pb-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        
+        <!-- 1. 피부결 개선 필요해? -->
+        <button onclick="walkToShop('texture')" class="plaza-choice-btn p-3.5 flex items-center gap-3.5 text-left group">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center">
+            <img id="choice-char-texture" class="w-16 h-16 transparent-char-img group-hover:scale-110 transition" alt="피부결 캐릭터">
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-[11px] mb-1">
+              1. 피부결개선상점 · 발효
+            </span>
+            <div class="text-base sm:text-lg font-black text-[#4A3423] group-hover:text-[#6B4C2B] transition">
+              1. 피부결 개선 필요해?
+            </div>
+            <p class="text-xs font-bold text-[#8C6D46] truncate">
+              모공도 잡고 화잘먹! · 넘버즈인 3번 라인
+            </p>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] text-[#4A3423] flex items-center justify-center font-black text-sm shrink-0 group-hover:bg-[#FDE47F] transition">
+            <i class="fa-solid fa-shoe-prints"></i>
+          </div>
+        </button>
+
+        <!-- 2. 수분 개선이 필요해? -->
+        <button onclick="walkToShop('moisture')" class="plaza-choice-btn p-3.5 flex items-center gap-3.5 text-left group">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center">
+            <img id="choice-char-moisture" class="w-16 h-16 transparent-char-img group-hover:scale-110 transition" alt="수분 캐릭터">
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-[11px] mb-1">
+              2. 수분개선상점 · PDRN·노니
+            </span>
+            <div class="text-base sm:text-lg font-black text-[#4A3423] group-hover:text-[#6B4C2B] transition">
+              2. 수분 개선이 필요해?
+            </div>
+            <p class="text-xs font-bold text-[#8C6D46] truncate">
+              촉촉한 피부가 좋아! · 메디큐브/VT/노니
+            </p>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] text-[#4A3423] flex items-center justify-center font-black text-sm shrink-0 group-hover:bg-[#FDE47F] transition">
+            <i class="fa-solid fa-shoe-prints"></i>
+          </div>
+        </button>
+
+        <!-- 3. 탄력·리프팅이 필요해? (탄력+리프팅 통합) -->
+        <button onclick="walkToShop('elasticity')" class="plaza-choice-btn p-3.5 flex items-center gap-3.5 text-left group">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center">
+            <img id="choice-char-elasticity" class="w-16 h-16 transparent-char-img group-hover:scale-110 transition" alt="탄력 캐릭터">
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-[11px] mb-1">
+              3. 탄력개선상점 · 탄력·리프팅
+            </span>
+            <div class="text-base sm:text-lg font-black text-[#4A3423] group-hover:text-[#6B4C2B] transition">
+              3. 탄력·리프팅이 필요해?
+            </div>
+            <p class="text-xs font-bold text-[#8C6D46] truncate">
+              탄력 UP! · 바이오힐보/레티날/콜라겐/레티놀
+            </p>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] text-[#4A3423] flex items-center justify-center font-black text-sm shrink-0 group-hover:bg-[#FDE47F] transition">
+            <i class="fa-solid fa-shoe-prints"></i>
+          </div>
+        </button>
+
+        <!-- 4. 미백 개선이 필요해? (달바 + 셀리맥스 트라넥삼산) -->
+        <button onclick="walkToShop('whitening')" class="plaza-choice-btn p-3.5 flex items-center gap-3.5 text-left group">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center">
+            <img id="choice-char-whitening" class="w-16 h-16 transparent-char-img group-hover:scale-110 transition" alt="미백 캐릭터">
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-[11px] mb-1">
+              4. 화사해지는 미백상점 · 비타·잡티
+            </span>
+            <div class="text-base sm:text-lg font-black text-[#4A3423] group-hover:text-[#6B4C2B] transition">
+              4. 미백 개선이 필요해?
+            </div>
+            <p class="text-xs font-bold text-[#8C6D46] truncate">
+              맑고 생기있는 피부! · 달바 & 셀리맥스 잡티
+            </p>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-[#F8F2E4] border border-[#DFCFAF] text-[#4A3423] flex items-center justify-center font-black text-sm shrink-0 group-hover:bg-[#FDE47F] transition">
+            <i class="fa-solid fa-shoe-prints"></i>
+          </div>
+        </button>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================
+       PAGE 2: 상점 내부 페이지
+       - 상단: 왼쪽 상점이미지 / 오른쪽 제품 들고 있는 투명 캐릭터 (모바일은 위/아래 배치)
+       - 하단: 예시 이미지(image_010aa5.png) 스타일의 상품 블럭 목록
+  =========================================================== -->
+  <main id="page-shop" class="hidden flex-1 flex flex-col max-w-5xl w-full mx-auto px-4 py-4 sm:py-6 relative z-20 space-y-6">
+    
+    <!-- 상점 이동 탭 바 -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+      <button onclick="switchShopDirect('texture')" id="tab-texture" class="shop-tab whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-black border-2 transition">
+        1. 피부결개선상점
+      </button>
+      <button onclick="switchShopDirect('moisture')" id="tab-moisture" class="shop-tab whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-black border-2 transition">
+        2. 수분개선상점
+      </button>
+      <button onclick="switchShopDirect('elasticity')" id="tab-elasticity" class="shop-tab whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-black border-2 transition">
+        3. 탄력개선상점
+      </button>
+      <button onclick="switchShopDirect('whitening')" id="tab-whitening" class="shop-tab whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-black border-2 transition">
+        4. 화사해지는 미백상점
+      </button>
+    </div>
+
+    <!-- [핵심 레이아웃] 상점 상단 쇼케이스:
+         PC(md 이상)에서는 왼쪽=상점 이미지 / 오른쪽=화장품 든 투명 캐릭터
+         모바일(기본)에서는 위쪽=상점 이미지 / 아래쪽=화장품 든 투명 캐릭터 -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+      
+      <!-- 왼쪽 (모바일 위쪽): 업로드해주신 개별 상점 이미지 (1~4번 상점) -->
+      <div class="md:col-span-7 w-full">
+        <div class="relative rounded-[28px] border-4 border-[#DFCFAF] shadow-[0_8px_0_#C9B286,0_14px_28px_rgba(74,52,35,0.14)] overflow-hidden bg-[#F8F2E4] aspect-[16/10]">
+          <img id="shop-scene-img" class="w-full h-full object-cover" alt="상점 배경 이미지">
+          <div class="absolute top-3 left-3">
+            <span id="shop-scene-badge" class="px-3.5 py-1 rounded-full bg-[#FDE47F] text-[#4A3423] font-black text-xs shadow-md border border-[#E0C36C]">
+              1. 피부결개선상점 · 발효
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 오른쪽 (모바일 아래쪽): 대표 제품을 들고 있는 투명 배경 캐릭터 + 대화창 -->
+      <div class="md:col-span-5 w-full flex flex-col items-center justify-center relative py-2">
+        
+        <!-- 캐릭터 위쪽 말풍선 (웹앱 배경을 가리지 않는 깔끔한 대화창) -->
+        <div class="bg-[#F8F2E4]/95 backdrop-blur-sm border-2.5 border-[#DFCFAF] rounded-[24px] px-5 py-3.5 shadow-[0_5px_0_#D3C09A] w-full mb-3 relative">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <span id="shop-char-quote" class="px-2.5 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-xs">
+              “모공도 잡고 화잘먹! ♡”
+            </span>
+            <span class="text-xs font-extrabold text-[#8C6D46]">딸랑~ 🔔</span>
+          </div>
+          <p id="shop-char-dialogue" class="text-xs sm:text-sm font-bold text-[#4A3423] leading-relaxed">
+            발효의 힘으로 더 매끄러운 피부결을! 아래 블럭을 눌러 상세 정보를 확인해 보세요.
+          </p>
+          <div class="w-3.5 h-3.5 bg-[#F8F2E4] border-r-2 border-b-2 border-[#DFCFAF] rotate-45 absolute -bottom-2 left-1/2 -translate-x-1/2"></div>
+        </div>
+
+        <!-- 대표 화장품을 들고 있는 투명 배경 여자 캐릭터 (배경이 투명해 웹앱 배경이 그대로 보임) -->
+        <div class="relative flex items-center justify-center h-52 sm:h-60 w-full">
+          <img id="shop-held-char-img" class="h-full w-auto max-w-full transparent-char-img animate-idle" alt="제품을 든 캐릭터">
+        </div>
+
+        <!-- 대표 컨셉 제품 캡션 & 1번 상점 시트팩 포즈 전환 버튼 -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mt-1">
+          <div id="shop-held-item-caption" class="px-4 py-1 rounded-full bg-[#4A3423] text-[#FDE47F] font-extrabold text-xs shadow-sm">
+            numbuzin · 3번 모공제로 화잘먹 패드
+          </div>
+          <button id="btn-toggle-sheet-pose" onclick="toggleTextureSheetPose()" class="hidden px-3 py-1 rounded-full bg-[#FDE47F] hover:bg-[#f7d659] text-[#4A3423] font-black text-xs border border-[#C9A94E] shadow-sm transition">
+            ✨ 시트팩 집중케어 포즈 보기
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- [하단 상품 목록]: 예시 이미지(image_010aa5.png)와 동일한 텍스트 블럭 리스트 -->
+    <section class="space-y-3.5 pb-14">
+      <div class="flex flex-wrap items-center justify-between gap-2 px-1">
+        <div class="flex items-center gap-2">
+          <h2 class="font-black text-base sm:text-lg text-[#4A3423]">상점 추천 기획세트 목록</h2>
+          <span id="shop-product-count" class="px-2.5 py-0.5 rounded-full bg-[#FDE47F] text-[#4A3423] font-extrabold text-xs">
+            총 4종
+          </span>
+        </div>
+        <span class="text-xs font-bold text-[#8C6D46]">※ 상품 블럭을 누르면 세일즈 포인트와 대립·유사 비교 창이 열립니다</span>
+      </div>
+
+      <!-- 예시 이미지 스타일 블럭 리스트 컨테이너 -->
+      <div id="product-blocks-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- JS로 렌더링 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================
+       상품 상세 설명 모달 (블럭 클릭 시 오픈)
+  =========================================================== -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#F8F2E4] border-4 border-[#DFCFAF] rounded-[30px] w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden shadow-[0_12px_0_#C9B286,0_20px_40px_rgba(0,0,0,0.28)]">
+      
+      <!-- 모달 상단 헤더 (image_010aa5.png 스타일 그대로 반영) -->
+      <div class="p-5 pb-4 border-b-2 border-[#DFCFAF] relative bg-[#FBF7EE]">
+        <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#4A3423] text-[#FDE47F] font-black text-sm flex items-center justify-center shadow hover:scale-105 transition">
+          ✕
+        </button>
+        <div id="modal-pill" class="product-pill-badge">1. 피부결개선상점 · 발효</div>
+        <h3 id="modal-title" class="product-block-title pr-8">상품명</h3>
+        <div id="modal-subtitle" class="product-block-subtitle">트렌드 성분: -</div>
+      </div>
+
+      <!-- 모달 상세 분석 내용 -->
+      <div class="p-5 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        
+        <!-- 기획세트 혜택 -->
+        <div class="p-4 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+          <div class="font-black text-[#4A3423] text-xs mb-1 flex items-center gap-1.5">
+            <span>🎁</span> <span>기획세트 구성 및 증정 혜택</span>
+          </div>
+          <p id="modal-gift" class="text-[#4A3423] font-extrabold leading-relaxed"></p>
+        </div>
+
+        <!-- 특징 분석 -->
+        <div class="p-4 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+          <div class="font-black text-[#4A3423] text-xs mb-1 flex items-center gap-1.5">
+            <span>🔍</span> <span>핵심 성분 및 특징 분석</span>
+          </div>
+          <p id="modal-feature" class="text-[#5C432E] font-semibold leading-relaxed"></p>
+        </div>
+
+        <!-- 세일즈 포커스 (10초 멘트) -->
+        <div class="p-4 rounded-2xl bg-[#FEF6D8] border-2 border-[#E8CE7A]">
+          <div class="font-black text-[#4A3423] text-xs mb-1 flex items-center gap-1.5">
+            <span>🗣️</span> <span>세일즈 포커스 (실전 추천 멘트)</span>
+          </div>
+          <p id="modal-pitch" class="text-[#4A3423] font-extrabold leading-relaxed"></p>
+        </div>
+
+        <!-- 대립 vs 유사 관계성 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+            <span class="font-black text-[#A63A5B] text-xs block mb-1">⚔️ 대립 구도 (차별점)</span>
+            <p id="modal-rival" class="text-xs text-[#4A3423] font-semibold leading-relaxed"></p>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+            <span class="font-black text-[#2E6B3E] text-xs block mb-1">🤝 유사 관계성 & 꿀조합</span>
+            <p id="modal-synergy" class="text-xs text-[#4A3423] font-semibold leading-relaxed"></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       4대 상점 비교분석 모달 (📊 비교분석 클릭 시 오픈)
+  =========================================================== -->
+  <div id="comparison-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#F8F2E4] border-4 border-[#DFCFAF] rounded-[30px] w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-[0_12px_0_#C9B286,0_20px_40px_rgba(0,0,0,0.28)]">
+      <div class="p-5 pb-4 border-b-2 border-[#DFCFAF] flex items-center justify-between bg-[#FBF7EE]">
+        <div>
+          <span class="product-pill-badge mb-1">📊 11월 꿀피부생성상점 총정리</span>
+          <h3 class="text-lg sm:text-xl font-black text-[#4A3423]">4대 성분 상점별 핵심 포커스 & 대립·유사 관계성</h3>
+        </div>
+        <button onclick="closeComparisonModal()" class="w-9 h-9 rounded-full bg-[#4A3423] text-[#FDE47F] font-black text-sm flex items-center justify-center shadow hover:scale-105 transition">
+          ✕
+        </button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4 text-xs sm:text-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div class="p-4 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+            <div class="font-black text-[#4A3423] text-sm mb-1.5">1. 피부결개선상점 · 발효 (4종)</div>
+            <p class="text-[#5C432E] font-semibold leading-relaxed mb-1">• <strong>주력 라인:</strong> 넘버즈인 3번 라인 (화잘먹 패드, PHA 버블팩, 모공결 세럼, 화잘먹 로션)</p>
+            <p class="text-[#8C6D46] font-bold">• <strong>셀링 포커스:</strong> 비피다+갈락토미세스 발효 시너지와 PHA·바쿠치올로 오돌토돌한 요철과 들뜬 각질을 즉각 잠재우는 메이크업 부스팅 특화.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+            <div class="font-black text-[#4A3423] text-sm mb-1.5">2. 수분개선상점 · PDRN·노니 (10종)</div>
+            <p class="text-[#5C432E] font-semibold leading-relaxed mb-1">• <strong>주력 라인:</strong> 메디큐브 연어 PDRN 4종 vs VT 산삼 비건 PDRN 4종 vs 셀리맥스 노니 앰플 vs 바이오던스 캐비어 PDRN</p>
+            <p class="text-[#8C6D46] font-bold">• <strong>셀링 포커스:</strong> 핑크 콜라겐 물광(메디큐브) vs 무향 저분자 비건 수분장벽(VT) vs 슈퍼푸드 노니 진정 보습(셀리맥스) 비교 추천.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+            <div class="font-black text-[#4A3423] text-sm mb-1.5">3. 탄력개선상점 · 탄력·리프팅 (16종)</div>
+            <p class="text-[#5C432E] font-semibold leading-relaxed mb-1">• <strong>주력 라인:</strong> 바이오힐보 3D 프로바이오덤, 셀리맥스 레티날 샷, 바이오던스 초저분자 콜라겐, 아이오페·이니스프리 레티놀</p>
+            <p class="text-[#8C6D46] font-bold">• <strong>셀링 포커스:</strong> 윤곽 3D 리프팅(바이오힐보) vs 고강도 레티날 스피큘 타이트닝(셀리맥스) vs 저자극 흔적 레티놀(이니스프리) 맞춤 큐레이션.</p>
+          </div>
+          <div class="p-4 rounded-2xl bg-[#FFFDF7] border-2 border-[#DFCFAF]">
+            <div class="font-black text-[#4A3423] text-sm mb-1.5">4. 화사해지는 미백상점 · 브라이트닝 (6종)</div>
+            <p class="text-[#5C432E] font-semibold leading-relaxed mb-1">• <strong>주력 라인:</strong> 달바 나이아신아마이드 5% 비타 토닝 & 트러플/톤업선 vs 셀리맥스 트라넥삼산 모공잡티</p>
+            <p class="text-[#8C6D46] font-bold">• <strong>셀링 포커스:</strong> 전체 안색을 밝히는 비타민 수분 광채(달바) vs 거뭇하게 착색된 멜라닌 모공·기미 타겟(셀리맥스 트라넥삼산) 이원화 공략.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================
+       1. 이미지 저장소 (동일 폴더 내 이미지 자동 감지 + 내장 투명 SVG 폴백)
+    ========================================================== */
+    window.EMBEDDED_ASSETS = {
+      charFront: null,
+      charWalk: null,
+      charBack: null,
+      heldTexture: null,
+      heldTextureSheet: null,
+      heldMoisture: null,
+      heldElasticity: null,
+      heldWhitening: null,
+      shopTexture: null,
+      shopMoisture: null,
+      shopElasticity: null,
+      shopWhitening: null,
+      rawSheetUrl: null
+    };
+
+    /* ==========================================================
+       2. 투명 배경(Alpha 100%) 캐릭터 & 4대 상점 기본 내장 아트워크
+          (로컬 파일 로드 전이나 미리보기 샌드박스에서 즉시 표시되며,
+           동일 폴더의 이미지가 감지되는 즉시 원본 이미지로 자동 교체됩니다)
+    ========================================================== */
+    function createTransparentCharDataURL(pose) {
+      let heldItem = '';
+      let isWink = false;
+      let sheetCheeks = '';
+
+      if (pose === 'texture') {
+        heldItem = `
+          <g transform="translate(36, 118)">
+            <rect x="0" y="10" width="76" height="48" rx="14" fill="#F8BBD0" stroke="#D87A9E" stroke-width="3"/>
+            <rect x="-3" y="0" width="82" height="16" rx="8" fill="#F48FB1" stroke="#D87A9E" stroke-width="3"/>
+            <rect x="8" y="21" width="60" height="26" rx="6" fill="#FFF7FA"/>
+            <text x="16" y="36" font-size="10" font-weight="900" fill="#883955" font-family="sans-serif">numbuzin</text>
+            <text x="52" y="42" font-size="18" font-weight="900" fill="#B83D68" font-family="sans-serif">3</text>
+          </g>`;
+      } else if (pose === 'textureSheet') {
+        isWink = true;
+        sheetCheeks = `
+          <rect x="52" y="88" width="18" height="14" rx="4" fill="#FFFFFF" opacity="0.92" stroke="#E0E0E0" stroke-width="1"/>
+          <rect x="110" y="88" width="18" height="14" rx="4" fill="#FFFFFF" opacity="0.92" stroke="#E0E0E0" stroke-width="1"/>
+        `;
+        heldItem = `
+          <g transform="translate(46, 134)">
+            <rect x="0" y="8" width="68" height="42" rx="12" fill="#F8BBD0" stroke="#D87A9E" stroke-width="3"/>
+            <rect x="-2" y="0" width="72" height="14" rx="7" fill="#F48FB1" stroke="#D87A9E" stroke-width="3"/>
+            <text x="14" y="33" font-size="9" font-weight="900" fill="#883955" font-family="sans-serif">numbuzin 3</text>
+          </g>`;
+      } else if (pose === 'moisture') {
+        heldItem = `
+          <g transform="translate(26, 92) rotate(-10)">
+            <rect x="18" y="0" width="14" height="16" rx="5" fill="#FFF" stroke="#D4B489" stroke-width="2.5"/>
+            <rect x="14" y="14" width="22" height="8" rx="3" fill="#E6C387"/>
+            <rect x="6" y="22" width="38" height="54" rx="12" fill="#F06292" stroke="#C2185B" stroke-width="3"/>
+            <rect x="11" y="34" width="28" height="24" rx="4" fill="#FCE4EC"/>
+            <text x="14" y="49" font-size="8.5" font-weight="900" fill="#AD1457" font-family="sans-serif">PDRN</text>
+          </g>`;
+      } else if (pose === 'elasticity') {
+        isWink = true;
+        heldItem = `
+          <g transform="translate(26, 114) rotate(-6)">
+            <rect x="0" y="12" width="74" height="40" rx="12" fill="#4A2C82" stroke="#2E165B" stroke-width="3"/>
+            <rect x="-3" y="0" width="80" height="16" rx="8" fill="#7E57C2" stroke="#4A2C82" stroke-width="3"/>
+            <text x="10" y="33" font-size="9" font-weight="900" fill="#EDE7F6" font-family="sans-serif">BIOHEAL BOH</text>
+            <text x="16" y="44" font-size="8" font-weight="800" fill="#D1C4E9" font-family="sans-serif">3D Lifting</text>
+          </g>`;
+      } else if (pose === 'whitening') {
+        heldItem = `
+          <g transform="translate(30, 88) rotate(-7)">
+            <rect x="14" y="0" width="16" height="18" rx="4" fill="#F5D77F" stroke="#C99E30" stroke-width="2.5"/>
+            <rect x="4" y="18" width="36" height="60" rx="12" fill="#FFD54F" stroke="#D49B1A" stroke-width="3"/>
+            <rect x="9" y="30" width="26" height="32" rx="5" fill="#FFFDF5"/>
+            <text x="12" y="45" font-size="9" font-weight="900" fill="#7D5320" font-family="sans-serif">d'Alba</text>
+            <text x="12" y="56" font-size="7.5" font-weight="900" fill="#B87314" font-family="sans-serif">VITA 5%</text>
+          </g>`;
+      }
+
+      let svgContent = '';
+      if (pose === 'back') {
+        svgContent = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 230">
+          <circle cx="90" cy="34" r="24" fill="#6D4C3D" stroke="#4E342E" stroke-width="4"/>
+          <circle cx="90" cy="82" r="42" fill="#6D4C3D" stroke="#4E342E" stroke-width="4"/>
+          <rect x="56" y="120" width="68" height="54" rx="20" fill="#F9F1E3" stroke="#C8B294" stroke-width="4"/>
+          <line x1="62" y1="124" x2="115" y2="168" stroke="#E0C8A8" stroke-width="8" stroke-linecap="round"/>
+          <rect x="64" y="170" width="23" height="36" rx="8" fill="#8FA8BE" stroke="#647D94" stroke-width="3.5"/>
+          <rect x="93" y="170" width="23" height="36" rx="8" fill="#8FA8BE" stroke="#647D94" stroke-width="3.5"/>
+          <ellipse cx="75" cy="212" rx="14" ry="8" fill="#FFF" stroke="#A69688" stroke-width="3.5"/>
+          <ellipse cx="105" cy="212" rx="14" ry="8" fill="#FFF" stroke="#A69688" stroke-width="3.5"/>
+        </svg>`;
+      } else {
+        svgContent = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 230">
+          <circle cx="90" cy="32" r="23" fill="#6D4C3D" stroke="#4E342E" stroke-width="3.8"/>
+          <path d="M72 36 Q90 26 108 36" stroke="#8D6E63" stroke-width="3" fill="none"/>
+          <circle cx="46" cy="88" r="9" fill="#FFE0CC" stroke="#DCA888" stroke-width="3"/>
+          <circle cx="134" cy="88" r="9" fill="#FFE0CC" stroke="#DCA888" stroke-width="3"/>
+          <rect x="48" y="48" width="84" height="70" rx="35" fill="#FFE4D1" stroke="#DCA888" stroke-width="3.2"/>
+          <path d="M46 76 C46 42, 134 42, 134 76 C124 58, 108 70, 90 66 C72 70, 56 58, 46 76 Z" fill="#6D4C3D" stroke="#4E342E" stroke-width="3.2"/>
+          ${isWink ? `
+            <path d="M62 86 Q71 78 80 86" stroke="#3E2723" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <circle cx="109" cy="86" r="10" fill="#3E2723"/>
+            <circle cx="106" cy="83" r="3.5" fill="#FFF"/>
+          ` : `
+            <circle cx="71" cy="86" r="10" fill="#3E2723"/>
+            <circle cx="68" cy="83" r="3.5" fill="#FFF"/>
+            <circle cx="109" cy="86" r="10" fill="#3E2723"/>
+            <circle cx="106" cy="83" r="3.5" fill="#FFF"/>
+          `}
+          <ellipse cx="58" cy="96" rx="8" ry="4.5" fill="#FF8A80" opacity="0.55"/>
+          <ellipse cx="122" cy="96" rx="8" ry="4.5" fill="#FF8A80" opacity="0.55"/>
+          ${sheetCheeks}
+          <path d="M84 96 Q90 103 96 96" stroke="#C85A48" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <rect x="54" y="118" width="72" height="54" rx="20" fill="#F9F1E3" stroke="#C8B294" stroke-width="3.5"/>
+          <line x1="90" y1="120" x2="90" y2="170" stroke="#D7C2A6" stroke-width="3"/>
+          <line x1="108" y1="120" x2="64" y2="164" stroke="#E5CEB1" stroke-width="6" stroke-linecap="round"/>
+          <rect x="50" y="150" width="22" height="18" rx="6" fill="#F2DEC4" stroke="#C2A37E" stroke-width="3"/>
+          ${heldItem}
+          <circle cx="52" cy="156" r="8" fill="#FFE4D1" stroke="#DCA888" stroke-width="2.8"/>
+          <circle cx="128" cy="156" r="8" fill="#FFE4D1" stroke="#DCA888" stroke-width="2.8"/>
+          <rect x="63" y="170" width="24" height="36" rx="7" fill="#8FA8BE" stroke="#647D94" stroke-width="3.2"/>
+          <rect x="93" y="170" width="24" height="36" rx="7" fill="#8FA8BE" stroke="#647D94" stroke-width="3.2"/>
+          <rect x="61" y="196" width="28" height="8" rx="3" fill="#B5C7D6" stroke="#647D94" stroke-width="2.5"/>
+          <rect x="91" y="196" width="28" height="8" rx="3" fill="#B5C7D6" stroke="#647D94" stroke-width="2.5"/>
+          <ellipse cx="75" cy="212" rx="14" ry="7.5" fill="#FFF" stroke="#A69688" stroke-width="3"/>
+          <ellipse cx="105" cy="212" rx="14" ry="7.5" fill="#FFF" stroke="#A69688" stroke-width="3"/>
+        </svg>`;
+      }
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svgContent.trim());
+    }
+
+    function createShopSceneDataURL(type) {
+      const themes = {
+        texture: {
+          roof: '#C69C6D', wall: '#FDF6E9', signBg: '#F9E6C8', title: '피부결개선상점',
+          sub: '발효의 힘으로 더 매끄러운 피부결을!', keeperColor: '#B88655', icon: '🏺'
+        },
+        moisture: {
+          roof: '#F7A8B8', wall: '#EBF7FD', signBg: '#E1F0FA', title: '수분개선상점',
+          sub: '수분으로 채워지는 맑은 피부!', keeperColor: '#FFD166', icon: '💧'
+        },
+        elasticity: {
+          roof: '#B392E0', wall: '#F5EEFC', signBg: '#9B75CF', title: '탄력개선상점',
+          sub: '탄력으로 더 탄탄한 피부를!', keeperColor: '#F8C8DC', icon: '✨'
+        },
+        whitening: {
+          roof: '#F9D966', wall: '#FFFBEB', signBg: '#FFF3BF', title: '화사해지는 미백상점',
+          sub: '비타민 가득! 화사하고 생기있게!', keeperColor: '#F5B841', icon: '☀️'
+        }
+      };
+      const t = themes[type];
+      const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+        <rect width="640" height="400" fill="${t.wall}"/>
+        <rect x="0" y="0" width="640" height="68" fill="${t.roof}"/>
+        <rect x="150" y="16" width="340" height="84" rx="42" fill="${t.signBg}" stroke="${t.roof}" stroke-width="8"/>
+        <text x="320" y="68" font-size="34" font-weight="900" fill="#4A3423" text-anchor="middle" font-family="sans-serif">${t.icon} ${t.title}</text>
+        <rect x="130" y="130" width="380" height="170" rx="18" fill="#FFF" stroke="${t.roof}" stroke-width="5"/>
+        <line x1="130" y1="185" x2="510" y2="185" stroke="${t.roof}" stroke-width="4"/>
+        <line x1="130" y1="240" x2="510" y2="240" stroke="${t.roof}" stroke-width="4"/>
+        <circle cx="340" cy="235" r="32" fill="${t.keeperColor}" stroke="#4A3423" stroke-width="3"/>
+        <circle cx="320" cy="208" r="10" fill="${t.keeperColor}" stroke="#4A3423" stroke-width="3"/>
+        <circle cx="360" cy="208" r="10" fill="${t.keeperColor}" stroke="#4A3423" stroke-width="3"/>
+        <circle cx="330" cy="232" r="4" fill="#4A3423"/>
+        <circle cx="350" cy="232" r="4" fill="#4A3423"/>
+        <rect x="250" y="265" width="180" height="85" rx="14" fill="${t.signBg}" stroke="${t.roof}" stroke-width="4"/>
+        <circle cx="430" cy="220" r="16" fill="#5A3E30"/>
+        <circle cx="430" cy="252" r="28" fill="#5A3E30"/>
+        <rect x="406" y="280" width="48" height="48" rx="14" fill="#F9F1E3" stroke="#C8B294" stroke-width="3"/>
+        <rect x="412" y="325" width="36" height="45" rx="6" fill="#8FA8BE"/>
+        <text x="68" y="180" font-size="16" font-weight="800" fill="#6E4F35" text-anchor="middle" font-family="sans-serif">${t.sub}</text>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg.trim());
+    }
+
+    /* ==========================================================
+       3. 로컬/웹서버 겸용 스프라이트 크롭 & 자동 투명화 엔진
+          - file:// 로컬 실행 시 CORS SecurityError가 발생해도
+            SVG <image> 클리핑 래퍼로 폴백하여 100% 정상 출력됩니다!
+    ========================================================== */
+    function createSvgClippedSpriteDataURL(sheetUrl, sxRatio, syRatio, swRatio, shRatio) {
+      const vbX = (sxRatio * 1000).toFixed(1);
+      const vbY = (syRatio * 671).toFixed(1);
+      const vbW = (swRatio * 1000).toFixed(1);
+      const vbH = (shRatio * 671).toFixed(1);
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vbX} ${vbY} ${vbW} ${vbH}">
+        <image href="${sheetUrl}" width="1000" height="671" preserveAspectRatio="none"/>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    function cropAndMakeTransparent(imgElement, sheetUrl, sxRatio, syRatio, swRatio, shRatio, isConceptCard = false) {
+      try {
+        const canvas = document.createElement('canvas');
+        const sw = Math.floor(imgElement.naturalWidth * swRatio);
+        const sh = Math.floor(imgElement.naturalHeight * shRatio);
+        const sx = Math.floor(imgElement.naturalWidth * sxRatio);
+        const sy = Math.floor(imgElement.naturalHeight * syRatio);
+
+        canvas.width = sw;
+        canvas.height = sh;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(imgElement, sx, sy, sw, sh, 0, 0, sw, sh);
+
+        const imgData = ctx.getImageData(0, 0, sw, sh);
+        const d = imgData.data;
+
+        if (!isConceptCard) {
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i + 1], b = d[i + 2];
+            const brightness = (r + g + b) / 3;
+            const maxDiff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+            if (brightness < 28 && maxDiff < 22) {
+              d[i + 3] = 0;
+            } else if (brightness < 48 && maxDiff < 18) {
+              d[i + 3] = Math.floor(((brightness - 28) / 20) * 255);
+            }
+          }
+        } else {
+          const bgR = d[16], bgG = d[17], bgB = d[18];
+          for (let y = 0; y < sh; y++) {
+            for (let x = 0; x < sw; x++) {
+              const idx = (y * sw + x) * 4;
+              const r = d[idx], g = d[idx + 1], b = d[idx + 2];
+              if (r < 30 && g < 30 && b < 30) {
+                d[idx + 3] = 0;
+                continue;
+              }
+              const distBg = Math.hypot(r - bgR, g - bgG, b - bgB);
+              if (distBg < 24 && (x < sw * 0.22 || x > sw * 0.85 || y < sh * 0.25)) {
+                d[idx + 3] = 0;
+              } else if (distBg < 34 && (x < sw * 0.15 || x > sw * 0.9 || y < sh * 0.15)) {
+                d[idx + 3] = Math.floor(((distBg - 24) / 10) * 255);
+              }
+            }
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+        return canvas.toDataURL('image/png');
+      } catch (err) {
+        // file:// 환경에서 getImageData 보안 제한 시 SVG 뷰박스 스프라이트로 즉시 폴백
+        return createSvgClippedSpriteDataURL(sheetUrl, sxRatio, syRatio, swRatio, shRatio);
+      }
+    }
+
+    function processCharacterSheetImage(img, sheetUrl) {
+      window.EMBEDDED_ASSETS.rawSheetUrl = sheetUrl;
+      // 상단 전신 (정면, 뒷모습, 우측, 좌측)
+      window.EMBEDDED_ASSETS.charFront = cropAndMakeTransparent(img, sheetUrl, 0.015, 0.06, 0.145, 0.41, false);
+      window.EMBEDDED_ASSETS.charBack  = cropAndMakeTransparent(img, sheetUrl, 0.175, 0.06, 0.145, 0.41, false);
+      window.EMBEDDED_ASSETS.charWalk  = cropAndMakeTransparent(img, sheetUrl, 0.325, 0.06, 0.125, 0.41, false);
+
+      // 하단 화장품 들고 있는 여자 캐릭터 5종
+      window.EMBEDDED_ASSETS.heldMoisture     = cropAndMakeTransparent(img, sheetUrl, 0.015, 0.545, 0.195, 0.335, true);
+      window.EMBEDDED_ASSETS.heldElasticity   = cropAndMakeTransparent(img, sheetUrl, 0.220, 0.545, 0.195, 0.335, true);
+      window.EMBEDDED_ASSETS.heldWhitening    = cropAndMakeTransparent(img, sheetUrl, 0.425, 0.545, 0.195, 0.335, true);
+      window.EMBEDDED_ASSETS.heldTexture      = cropAndMakeTransparent(img, sheetUrl, 0.630, 0.545, 0.195, 0.335, true);
+      window.EMBEDDED_ASSETS.heldTextureSheet = cropAndMakeTransparent(img, sheetUrl, 0.830, 0.545, 0.155, 0.335, true);
+
+      applyAssetsToDOM();
+    }
+
+    // 후보 파일명 배열을 순차적으로 시도하여 존재하는 첫 번째 이미지를 자동 로드
+    function tryLoadCandidates(candidates, onSuccess) {
+      let idx = 0;
+      function attemptNext() {
+        if (idx >= candidates.length) return;
+        const currentSrc = candidates[idx++];
+        const img = new Image();
+        img.onload = () => onSuccess(img, currentSrc);
+        img.onerror = () => attemptNext();
+        img.src = currentSrc;
+      }
+      attemptNext();
+    }
+
+    // 동일 폴더(./) 내 캐릭터 시트 및 4대 상점 이미지 자동 로드
+    function autoLoadSameFolderImages() {
+      const charCandidates = [
+        'character_sheet.png',
+        'character_sheet.jpg',
+        '11월 피부개선 꿀피부생성상점 캐릭터 시트1.png',
+        '11월 피부개선 꿀피부생성상점 캐릭터 시트1.jpg',
+        '11월 피부개선 꿀피부생성상점 캐릭터 시트.png',
+        '11월 피부개선 꿀피부생성상점 캐릭터 시트.jpg'
+      ];
+      tryLoadCandidates(charCandidates, (img, src) => {
+        processCharacterSheetImage(img, src);
+      });
+
+      const shopCandidatesMap = [
+        {
+          key: 'shopTexture',
+          candidates: ['shop1.png', 'shop1.jpg', '1_상점_피부결개선.png', '1_상점_피부결개선.jpg']
+        },
+        {
+          key: 'shopMoisture',
+          candidates: ['shop2.png', 'shop2.jpg', '2_상점_수분개선.png', '2_상점_수분개선.jpg']
+        },
+        {
+          key: 'shopElasticity',
+          candidates: ['shop3.png', 'shop3.jpg', '3.상점_탄력개선.png', '3.상점_탄력개선.jpg', '3_상점_탄력개선.png', '3_상점_탄력개선.jpg']
+        },
+        {
+          key: 'shopWhitening',
+          candidates: ['shop4.png', 'shop4.jpg', '4.상점_미백.png', '4.상점_미백.jpg', '4_상점_미백.png', '4_상점_미백.jpg']
+        }
+      ];
+
+      shopCandidatesMap.forEach(entry => {
+        tryLoadCandidates(entry.candidates, (img, src) => {
+          window.EMBEDDED_ASSETS[entry.key] = src;
+          applyAssetsToDOM();
+        });
+      });
+    }
+
+    function initDefaultEmbeddedAssets() {
+      const A = window.EMBEDDED_ASSETS;
+      if (!A.charFront)        A.charFront        = createTransparentCharDataURL('front');
+      if (!A.charWalk)         A.charWalk         = createTransparentCharDataURL('front');
+      if (!A.charBack)         A.charBack         = createTransparentCharDataURL('back');
+      if (!A.heldTexture)      A.heldTexture      = createTransparentCharDataURL('texture');
+      if (!A.heldTextureSheet) A.heldTextureSheet = createTransparentCharDataURL('textureSheet');
+      if (!A.heldMoisture)     A.heldMoisture     = createTransparentCharDataURL('moisture');
+      if (!A.heldElasticity)   A.heldElasticity   = createTransparentCharDataURL('elasticity');
+      if (!A.heldWhitening)    A.heldWhitening    = createTransparentCharDataURL('whitening');
+      if (!A.shopTexture)      A.shopTexture      = createShopSceneDataURL('texture');
+      if (!A.shopMoisture)     A.shopMoisture     = createShopSceneDataURL('moisture');
+      if (!A.shopElasticity)   A.shopElasticity   = createShopSceneDataURL('elasticity');
+      if (!A.shopWhitening)    A.shopWhitening    = createShopSceneDataURL('whitening');
+    }
+
+    function applyAssetsToDOM() {
+      const A = window.EMBEDDED_ASSETS;
+      document.getElementById('header-mini-char').src = A.charFront;
+      document.getElementById('plaza-char-img').src = A.charFront;
+      document.getElementById('choice-char-texture').src = A.heldTexture;
+      document.getElementById('choice-char-moisture').src = A.heldMoisture;
+      document.getElementById('choice-char-elasticity').src = A.heldElasticity;
+      document.getElementById('choice-char-whitening').src = A.heldWhitening;
+
+      if (!document.getElementById('page-shop').classList.contains('hidden')) {
+        renderShopInterior(currentShopId);
+      }
+    }
+
+    /* ==========================================================
+       4. Web Audio API 사운드 엔진 (낙엽바람, 저벅저벅, 문+딸랑종)
+    ========================================================== */
+    const SoundFX = {
+      ctx: null,
+      muted: false,
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtx();
+        }
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+      },
+
+      toggleMute() {
+        this.muted = !this.muted;
+        const icon = document.getElementById('sound-icon');
+        const label = document.getElementById('sound-label');
+        const btn = document.getElementById('btn-sound-toggle');
+
+        if (this.muted) {
+          icon.className = 'fa-solid fa-volume-xmark';
+          label.innerText = '효과음 OFF';
+          btn.className = 'px-3 py-1.5 rounded-full bg-gray-400 text-white font-extrabold text-xs border-2 border-gray-500 shadow-[0_3px_0_#4B5563] flex items-center gap-1 transition';
+        } else {
+          icon.className = 'fa-solid fa-volume-high';
+          label.innerText = '효과음 ON';
+          btn.className = 'px-3 py-1.5 rounded-full bg-[#78C257] text-white font-extrabold text-xs border-2 border-[#559B38] shadow-[0_3px_0_#3E7A25] flex items-center gap-1 transition';
+          this.playPop();
+        }
+      },
+
+      playWind() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const duration = 1.3;
+        const bufferSize = this.ctx.sampleRate * duration;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.sin(i * 0.015) * 0.3 + (Math.random() * 2 - 1) * 0.7) * 0.22;
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.Q.setValueAtTime(3.0, now);
+        filter.frequency.setValueAtTime(320, now);
+        filter.frequency.exponentialRampToValueAtTime(880, now + duration * 0.45);
+        filter.frequency.exponentialRampToValueAtTime(260, now + duration);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.24, now + 0.35);
+        gain.gain.exponentialRampToValueAtTime(0.005, now + duration);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+        noise.stop(now + duration);
+      },
+
+      playSingleFootstep(stepIndex = 0) {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(stepIndex % 2 === 0 ? 135 : 155, now);
+        osc.frequency.exponentialRampToValueAtTime(48, now + 0.09);
+
+        gain.gain.setValueAtTime(0.32, now);
+        gain.gain.exponentialRampToValueAtTime(0.008, now + 0.095);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.1);
+      },
+
+      playFootstepSequence(steps = 5, intervalMs = 210) {
+        for (let i = 0; i < steps; i++) {
+          setTimeout(() => this.playSingleFootstep(i), i * intervalMs);
+        }
+      },
+
+      playDoorAndBell() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+
+        const doorOsc = this.ctx.createOscillator();
+        const doorGain = this.ctx.createGain();
+        doorOsc.type = 'sawtooth';
+        doorOsc.frequency.setValueAtTime(95, now);
+        doorOsc.frequency.linearRampToValueAtTime(140, now + 0.12);
+        doorOsc.frequency.exponentialRampToValueAtTime(70, now + 0.28);
+
+        doorGain.gain.setValueAtTime(0.01, now);
+        doorGain.gain.linearRampToValueAtTime(0.18, now + 0.05);
+        doorGain.gain.exponentialRampToValueAtTime(0.008, now + 0.3);
+
+        doorOsc.connect(doorGain);
+        doorGain.connect(this.ctx.destination);
+        doorOsc.start(now);
+        doorOsc.stop(now + 0.31);
+
+        const bellNotes = [
+          { freq: 1567.98, delay: 0.22, dur: 0.85 },
+          { freq: 2093.00, delay: 0.24, dur: 1.0 },
+          { freq: 1760.00, delay: 0.42, dur: 0.85 },
+          { freq: 2637.02, delay: 0.44, dur: 1.3 }
+        ];
+        bellNotes.forEach(n => {
+          const bOsc = this.ctx.createOscillator();
+          const bGain = this.ctx.createGain();
+          bOsc.type = 'sine';
+          bOsc.frequency.setValueAtTime(n.freq, now + n.delay);
+          bGain.gain.setValueAtTime(0.001, now + n.delay);
+          bGain.gain.linearRampToValueAtTime(0.18, now + n.delay + 0.015);
+          bGain.gain.exponentialRampToValueAtTime(0.0008, now + n.delay + n.dur);
+          bOsc.connect(bGain);
+          bGain.connect(this.ctx.destination);
+          bOsc.start(now + n.delay);
+          bOsc.stop(now + n.delay + n.dur);
+        });
+      },
+
+      playPop() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(980, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.095);
+      }
+    };
+
+    /* ==========================================================
+       5. 4대 상점 설정 (상점 이미지 + 투명 캐릭터 매칭)
+    ========================================================== */
+    const SHOPS_META = {
+      texture: {
+        id: 'texture',
+        pillText: '1. 피부결개선상점 · 발효',
+        quote: '“모공도 잡고 화잘먹! ♡”',
+        dialogue: '발효의 힘으로 더 매끄러운 피부결을! 오돌토돌한 요철과 각질을 잠재우는 넘버즈인 3번 라인입니다.',
+        heldCaption: 'numbuzin · 3번 모공제로 화잘먹 패드',
+        shopAssetKey: 'shopTexture',
+        heldAssetKey: 'heldTexture',
+        walkReply: '“피부결개선상점으로 걸어가요! 저벅저벅~ 🍃”'
+      },
+      moisture: {
+        id: 'moisture',
+        pillText: '2. 수분개선상점 · PDRN',
+        quote: '“촉촉한 피부가 좋아! ♡”',
+        dialogue: '수분으로 채워지는 맑은 피부! 메디큐브 핑크 PDRN, VT 산삼 PDRN, 셀리맥스 노니 앰플을 만나보세요.',
+        heldCaption: 'medicube · PDRN 핑크 펩타이드 앰플',
+        shopAssetKey: 'shopMoisture',
+        heldAssetKey: 'heldMoisture',
+        walkReply: '“수분개선상점으로 걸어가요! 저벅저벅~ 💧”'
+      },
+      elasticity: {
+        id: 'elasticity',
+        pillText: '3. 탄력개선상점 · 탄력·리프팅',
+        quote: '“탄력 UP! ♡”',
+        dialogue: '탄력과 리프팅을 한곳에! 바이오힐보 3D 리프팅, 셀리맥스 레티날 샷, 바이오던스 콜라겐, 아이오페·이니스프리 레티놀 라인입니다.',
+        heldCaption: 'BIOHEAL BOH · 3D 리프팅 크림',
+        shopAssetKey: 'shopElasticity',
+        heldAssetKey: 'heldElasticity',
+        walkReply: '“탄력개선상점으로 걸어가요! 저벅저벅~ ✨”'
+      },
+      whitening: {
+        id: 'whitening',
+        pillText: '4. 화사해지는 미백상점 · 브라이트닝',
+        quote: '“맑고 생기있는 피부! ♡”',
+        dialogue: '비타민 가득 화사하고 생기있게! 달바 나이아신아마이드 5% 비타 라인과 셀리맥스 트라넥삼산 모공잡티 라인입니다.',
+        heldCaption: 'd\'Alba · 비타 캡슐 세럼 나이아신아마이드 5%',
+        shopAssetKey: 'shopWhitening',
+        heldAssetKey: 'heldWhitening',
+        walkReply: '“화사해지는 미백상점으로 걸어가요! 저벅저벅~ ☀️”'
+      }
+    };
+
+    /* ==========================================================
+       6. 36개 전체 상품 데이터
+    ========================================================== */
+    const PRODUCTS = [
+      // 1. 피부결개선상점 (넘버즈인 3번 4종)
+      {
+        id: "tex_1", shop: "texture", brand: "넘버즈인", code: "2611",
+        name: "넘버즈인 3번 모공제로 화잘먹 패드 70매 기획 (+70매 리필+2매+휴대용 케이스) (2611)",
+        tag: "발효 + 바쿠치올·PHA 모공결 패드",
+        gift: "본품 70매 + 리필 70매(총 142매) + 전용 휴대용 케이스 증정",
+        feature: "비피다·갈락토미세스 발효 성분과 저자극 PHA, 바쿠치올이 묵은 각질과 피지 요철을 정돈해 화장 들뜸을 잡아주는 패드.",
+        salesPitch: "“아침 메이크업 전 양볼에 3분만 붙여두면 모공은 쫀쫀하게 조여지고 파운데이션이 착 달라붙는 화잘먹 치트키 패드입니다!”",
+        rival: "이니스프리 레티놀 시카 패드/앰플 (발효 보습광과 즉각적인 화잘먹 결 정돈은 넘버즈인 3번 패드가 우위)",
+        synergy: "넘버즈인 3번 보들보들 모공결 세럼 + 결 화잘먹 로션"
+      },
+      {
+        id: "tex_2", shop: "texture", brand: "넘버즈인", code: "2611",
+        name: "넘버즈인 3번 매끈결 PHA 화 버블팩 90ml 기획 (+30ml) (2611)",
+        tag: "미세 산소버블 각질·모공 노폐물 딥클렌징",
+        gift: "본품 90ml + 추가 증정 30ml 튜브 (총 120ml)",
+        feature: "도포 후 보글보글 올라오는 미세 PHA 버블이 물리적 자극 없이 모공 속 노폐물과 들뜬 각질을 녹여내는 워시오프 버블팩.",
+        salesPitch: "“스크럽 알갱이로 문지르지 않아도 거품이 알아서 모공 속 피지와 각질을 청소해 줍니다! 세안 직후 보들보들함이 달라요.”",
+        rival: "셀리맥스 레티날 샷 부스터 (버블팩으로 겉각질을 먼저 비워낸 뒤 세럼을 바르면 흡수율이 배가됨)",
+        synergy: "버블팩 세안 직후 → 넘버즈인 3번 모공결 세럼 도포"
+      },
+      {
+        id: "tex_3", shop: "texture", brand: "넘버즈인", code: "2611",
+        name: "넘버즈인 3번 보들보들 모공결 세럼 30ml 더블 기획 (+결세럼팩 1매) (2611)",
+        tag: "비피다 42% + 갈락토미세스 21% + 나이아신아마이드",
+        gift: "본품 30ml + 30ml 1+1 더블 구성 (총 60ml) + 3번 결세럼팩 1매",
+        feature: "SK-II 피테라(갈락토미세스)와 갈색병(비피다) 핵심 발효 성분을 고함량 배합하고 나이아신아마이드(약 2%)로 모공 수렴까지 챙긴 대표 결세럼.",
+        salesPitch: "“백화점 명품 발효 에센스 두 병의 핵심 성분을 한 병에 담은 올리브영 1등 결세럼! 오돌토돌한 요철과 피부결을 쫀쫀하게 잡아줍니다.”",
+        rival: "아이오페 레티놀 레티젝션 세럼 (레티놀이 주름·탄력 타겟이라면, 넘버즈인 3번은 즉각적인 보들보들 요철 정돈 타겟)",
+        synergy: "넘버즈인 3번 화잘먹 패드 사용 후 레이어링"
+      },
+      {
+        id: "tex_4", shop: "texture", brand: "넘버즈인", code: "2611",
+        name: "넘버즈인 3번 보들보들 결 화잘먹 로션 150ml 기획 (+100ml) (2611)",
+        tag: "메이크업 밀착 부스팅 발효 에멀전",
+        gift: "본품 150ml + 추가 증정 100ml (총 250ml 대용량 구성)",
+        feature: "무거운 크림 대신 발효 보습막이 피부 결 사이사이를 매끄럽게 메워주어 베이스 메이크업의 밀착력과 지속력을 높여주는 로션.",
+        salesPitch: "“아침에 크림 바르면 화장 밀리고, 안 바르면 속건조 오시는 분들을 위한 250ml 대용량 화잘먹 로션입니다!”",
+        rival: "달바 워터풀 톤업 선크림 (화잘먹 로션으로 속결을 다진 후 달바 톤업 선크림을 바르면 찰떡 시너지)",
+        synergy: "넘버즈인 3번 모공결 세럼 + 결 화잘먹 로션 듀오"
+      },
+
+      // 2. 수분개선상점 (메디큐브 PDRN 4종 + 셀리맥스 노니 앰플 + VT PDRN 4종 + 바이오던스 캐비어 PDRN = 10종)
+      {
+        id: "moi_1", shop: "moisture", brand: "메디큐브", code: "2609",
+        name: "메디큐브 PDRN 핑크 펩타이드 앰플 30ml 리필기획 (+리필팩 50ml+앰플 10ml) (2609)",
+        tag: "연어 PDRN + 5종 펩타이드 수분·광채 (총 90ml)",
+        gift: "본품 30ml + 대용량 리필팩 50ml + 미니 앰플 10ml (총 90ml)",
+        feature: "연어 유래 PDRN 10,000ppm과 5종 펩타이드, 비타민 B12가 푸석한 피부 속건조와 장벽을 쫀쫀하게 채워주는 수분 광채 앰플.",
+        salesPitch: "“수분개선상점 캐릭터가 들고 있는 바로 그 핑크 앰플! 본품 3병 용량인 총 90ml 구성으로 속건조와 물광을 한 번에 잡으세요.”",
+        rival: "VT 피디알엔 에센스 100 (VT가 비건 산삼 PDRN 에센스라면, 메디큐브는 핑크 비타민+연어 PDRN 수분 흔적 케어)",
+        synergy: "메디큐브 PDRN 핑크 콜라겐 캡슐크림 + 젤리 미스트"
+      },
+      {
+        id: "moi_2", shop: "moisture", brand: "메디큐브", code: "2609",
+        name: "메디큐브 PDRN 핑크 콜라겐 글로우 젤리 미스트 100ml 더블기획 (+화질 대왕 퍼프) (2609)",
+        tag: "핑크 콜라겐·PDRN 탱글 젤리 물광 미스트",
+        gift: "본품 100ml 2개(더블) + 화잘먹 대왕 퍼프 증정",
+        feature: "용기 안에서는 탱글한 핑크 콜라겐·PDRN 젤리지만 분사 순간 미세한 수분 광채 입자로 내려앉아 마르지 않는 보습 코팅막 형성.",
+        salesPitch: "“뿌리고 날아가는 물 미스트가 아니라 핑크 젤리 에센스를 통째로 분사합니다! 대왕 퍼프에 뿌려 두드리면 종일 촉촉한 물광이 유지돼요.”",
+        rival: "달바 화이트 트러플 퍼스트 스프레이 (달바가 오일+세럼 보습광이라면, 메디큐브는 쫀쫀한 핑크 PDRN 젤리 밀착광)",
+        synergy: "메디큐브 PDRN 핑크 펩타이드 앰플 전후 수시 분사"
+      },
+      {
+        id: "moi_3", shop: "moisture", brand: "메디큐브", code: "2611",
+        name: "메디큐브 PDRN 글로우 토닝 부스터 15ml 기획 (+5ml) (2611)",
+        tag: "연어 PDRN 퍼스트 수분·속광 토닝 부스터",
+        gift: "본품 15ml + 휴대용 5ml 추가 증정 (총 20ml)",
+        feature: "세안 직후 메마른 피부에 연어 PDRN과 수분 토닝 성분을 빠르게 공급해 다음 단계 앰플의 흡수 길을 열어주는 워터리 부스터.",
+        salesPitch: "“핑크 펩타이드 앰플 바르기 전 첫 단계에 발라주시면 속건조 해결과 맑은 물광 시너지가 2배로 올라갑니다!”",
+        rival: "VT 피디알엔 리들샷 부스터 샷 100 (자극 없이 순하고 촉촉한 워터리 부스팅을 원할 때 메디큐브 추천)",
+        synergy: "메디큐브 PDRN 글로우 토닝 부스터 → 핑크 펩타이드 앰플"
+      },
+      {
+        id: "moi_4", shop: "moisture", brand: "메디큐브", code: "2609",
+        name: "메디큐브 PDRN 핑크 콜라겐 캡슐크림 55g 기획 (+4.5g*2ea+앰플 마스크 1ea) (2609)",
+        tag: "핑크 PDRN·콜라겐 캡슐 + 수분 젤 듀얼 크림",
+        gift: "본품 55g + 미니 4.5g * 2개 + 핑크 앰플 마스크팩 1매 증정",
+        feature: "촉촉한 투명 수분 젤 베이스 안에 고농축 핑크 PDRN·콜라겐 캡슐이 담겨 있어 피부 컨디션에 맞춰 섞어 바르는 수분 캡슐 크림.",
+        salesPitch: "“수부지부터 건성까지 내 피부 상태에 맞춰 캡슐 개수를 조절해 바르세요! 핑크 앰플 마스크팩까지 함께 들어있어요.”",
+        rival: "VT 피디알엔 캡슐 크림 100 (메디큐브는 연어 PDRN+핑크 콜라겐 캡슐 / VT는 산삼 비건 PDRN 초록 캡슐)",
+        synergy: "메디큐브 PDRN 핑크 펩타이드 앰플과 완벽한 짝꿍"
+      },
+      {
+        id: "moi_5", shop: "moisture", brand: "셀리맥스", code: "2611",
+        name: "셀리맥스 더 리얼 노니 에너지 앰플 80ml 기획 (+미스트 50ml) (2611)",
+        tag: "슈퍼푸드 노니 추출물 71.77% 집중 수분·진정",
+        gift: "대용량 본품 80ml + 노니 수분 미스트 50ml 추가 증정",
+        feature: "비타민과 미네랄이 풍부한 노니열매추출물 71.77%가 푸석하고 열감 오른 피부에 깊은 속보습과 쫀쫀한 진정 에너지를 공급.",
+        salesPitch: "“속건조가 심해 화장이 들뜨거나 붉은기가 올라올 때 바르면 피부 속부터 쫀득한 초록빛 수분광이 차오릅니다. 80ml 대용량에 미스트까지 드려요!”",
+        rival: "메디큐브 PDRN 핑크 앰플 (식물성 슈퍼푸드 노니의 편안한 수분 진정·영양감을 선호할 때 강력 추천)",
+        synergy: "탄력상점의 '셀리맥스 레티날 샷 부스터' 사용 전후 수분 진정 앰플로 레이어링"
+      },
+      {
+        id: "moi_6", shop: "moisture", brand: "VT", code: "더블기획",
+        name: "VT 피디알엔 에센스 100 30ml 더블 기획 (+리들샷 100 10ml)",
+        tag: "산삼 유래 식물성 PDRN 100,000ppm 고함량",
+        gift: "본품 30ml + 30ml 더블(총 60ml) + 리들샷 100 10ml 증정",
+        feature: "연어보다 분자 크기가 작은 저분자 '산삼 유래 비건 PDRN'을 100,000ppm 고함량으로 담아 냄새 없이 빠르게 흡수되는 에센스.",
+        salesPitch: "“리들샷 100 10ml가 함께 들어있어요! 리들샷으로 길을 열고 산삼 PDRN 에센스를 발라주면 속수분과 윤기가 배가 됩니다.”",
+        rival: "메디큐브 PDRN 핑크 앰플 (비건·무향 처방과 10만ppm 고함량 에센스 제형을 원한다면 VT 선택)",
+        synergy: "동봉된 리들샷 100 → VT 피디알엔 에센스 100 → VT 피디알엔 캡슐 크림"
+      },
+      {
+        id: "moi_7", shop: "moisture", brand: "VT", code: "기획세트",
+        name: "VT 피디알엔 캡슐 크림 100 50ml 기획 (+4.5ml*3ea)",
+        tag: "초록 산삼 PDRN 캡슐 + 10중 히알루론산 수분젤",
+        gift: "본품 50ml + 휴대용 튜브 4.5ml * 3개 증정 (총 63.5ml)",
+        feature: "청량한 10중 히알루론산 투명 수분 젤과 산삼 PDRN·세라마이드·펩타이드가 응축된 초록 캡슐을 섞어 쓰는 겉쫀속촉 수분크림.",
+        salesPitch: "“무거운 크림은 답답해서 싫어하는 수부지 고객님들께 1순위 추천! 수분 젤이 열감을 시원하게 내려주고 캡슐이 속보습을 채워줍니다.”",
+        rival: "메디큐브 PDRN 핑크 콜라겐 캡슐크림 (산삼 유래 비건 PDRN 10만ppm과 산뜻한 쿨링 수분젤을 원할 때 VT 추천)",
+        synergy: "VT 피디알엔 에센스 100 또는 리들샷 부스터 사용 후 마무리 크림"
+      },
+      {
+        id: "moi_8", shop: "moisture", brand: "VT", code: "리필기획",
+        name: "VT 피디알엔 리들샷 아이 리프터 15ml 리필기획 (+리필 15ml)",
+        tag: "쿨링 메탈 어플리케이터 + 산삼 PDRN 수분 아이케어",
+        gift: "본품 15ml + 정량 리필 15ml 1+1 구성 (총 30ml)",
+        feature: "건조하고 칙칙해지기 쉬운 눈가와 팔자 부위에 시카 리들과 저분자 산삼 PDRN 수분 영양을 쿨링 팁으로 마사지하며 밀착 흡수.",
+        salesPitch: "“차가운 메탈 팁으로 롤링해주면 아침 눈가 붓기 케어와 건조한 잔주름 수분 충전이 동시에 됩니다! 리필까지 1+1이에요.”",
+        rival: "아이오페 스템3 리커버리 세럼 (국소 부위 전용 쿨링 마사지 어플리케이터를 원할 때 VT 아이 리프터 추천)",
+        synergy: "VT 피디알엔 캡슐 크림 100과 함께 사용"
+      },
+      {
+        id: "moi_9", shop: "moisture", brand: "VT", code: "단품기획",
+        name: "VT 피디알엔 리들샷 부스터 샷 100 15ml",
+        tag: "시카 리들™ + 산삼 PDRN 수분광 침투 부스터",
+        gift: "집중 부스팅 본품 15ml",
+        feature: "모공보다 작은 시카 리들™에 식물성 산삼 PDRN을 결합해 세안 후 첫 단계에서 각질층 수분 통로를 열어주는 부스터.",
+        salesPitch: "“일반 리들샷보다 훨씬 촉촉하고 부드러워진 PDRN 리들샷! 어떤 수분 앰플·크림과 함께 써도 흡수력을 극대화해 줍니다.”",
+        rival: "메디큐브 PDRN 글로우 토닝 부스터 (미세 리들 자극을 통한 확실한 유효성분 침투를 원한다면 VT 선택)",
+        synergy: "VT 피디알엔 캡슐 크림 100과 최고의 시너지"
+      },
+      {
+        id: "moi_10", shop: "moisture", brand: "바이오던스", code: "2611",
+        name: "바이오던스 리쥬비네이팅 캐비어 PDRN 리얼 딥 마스크 7매 기획 (+콜라겐 1매+무드등 키링) (2611)",
+        tag: "캐비어 PDRN + 투명해지는 수면 하이드로겔 마스크",
+        gift: "캐비어 PDRN 마스크 7매 + 핑크 콜라겐 마스크 1매 + 무드등 키링 증정",
+        feature: "캐비어 추출물과 PDRN 수분 앰플 한 병을 그대로 굳힌 하이드로겔 팩으로, 피부에 유효 성분이 깊이 흡수되면서 시트가 투명하게 변함.",
+        salesPitch: "“속건조가 극심한 날 붙이고 주무시면 아침에 맑은 물광 피부가 완성됩니다! 7+1매 대용량에 귀여운 무드등 키링까지 챙겨가세요.”",
+        rival: "바이오던스 바이오 콜라겐 리얼 딥 마스크 (핑크가 모공·탄력 중심이라면, 캐비어 PDRN은 깊은 속보습·윤기 재생 중심)",
+        synergy: "메디큐브 또는 VT PDRN 앰플 도포 후 위에 부착"
+      },
+
+      // 3. 탄력개선상점 (탄력·리프팅 통합: 바이오힐보 4종 + 셀리맥스 레티날 + 바이오던스 콜라겐 3종 + 아이오페 4종 + 이니스프리 4종 = 16종)
+      {
+        id: "ela_1", shop: "elasticity", brand: "바이오힐보", code: "2611",
+        name: "바이오힐보 프로바이오덤™ 3D 리프팅 크림 50ml & 리프트업 세라믹 괄사 기획 (+크림 20ml) (2611)",
+        tag: "프로바이오덤™ + 17종 펩타이드 3D 입체 리프팅",
+        gift: "본품 50ml + 추가 크림 20ml(총 70ml) + 리프트업 세라믹 괄사 증정",
+        feature: "탄력개선상점 캐릭터가 들고 있는 대표 보라색 크림! 특허 프로바이오덤™과 17종 펩타이드가 피부 속 밀도를 채우고 무너진 윤곽을 3D 리프팅.",
+        salesPitch: "“올리브영 탄력·리프팅 1위 크림! 총 70ml 대용량에 얼굴 윤곽에 착 감기는 세라믹 괄사까지 들어있어 홈케어 리프팅 끝판왕입니다.”",
+        rival: "바이오던스 포어 퍼펙팅 콜라겐 크림 (바이오힐보가 묵직하고 쫀쫀한 윤곽 리프팅이라면, 바이오던스는 매끈한 모공 탄력 크림)",
+        synergy: "바이오힐보 콜라겐 리모델링 세럼 도포 후 → 3D 리프팅 크림 + 세라믹 괄사 마사지"
+      },
+      {
+        id: "ela_2", shop: "elasticity", brand: "바이오힐보", code: "2611 올영픽",
+        name: "바이오힐보 프로바이오덤™ 콜라겐 리모델링 세럼 겔 미스트 100mL 더블 기획 (2611 올영픽)",
+        tag: "프로바이오덤™ + 저분자 콜라겐 모공 리모델링 미스트",
+        gift: "본품 100ml + 100ml 1+1 더블 구성 (2611 올영픽)",
+        feature: "탄력 유산균 프로바이오덤™과 콜라겐 세럼을 겔 제형으로 담아 뿌리는 즉시 느슨해진 모공과 피부 결을 탱글하게 잡아주는 미스트.",
+        salesPitch: "“이달의 올영픽! 수시로 뿌릴 때마다 콜라겐 세럼을 덧바르는 듯한 모공 타이트닝 효과를 주는 1+1 더블 기획입니다.”",
+        rival: "메디큐브 PDRN 핑크 젤리 미스트 (메디큐브가 수분 물광 중심이라면, 바이오힐보는 모공·탄력 리모델링 중심)",
+        synergy: "바이오힐보 콜라겐 리모델링 세럼 전 단계 부스터로 활용"
+      },
+      {
+        id: "ela_3", shop: "elasticity", brand: "바이오힐보", code: "2611",
+        name: "바이오힐보 프로바이오덤™ 콜라겐 리모델링 세럼 30ml 리필 기획 (총 73ml) (2611)",
+        tag: "T1·T3 콜라겐 캡슐 세로모공 탄력 리모델링",
+        gift: "본품 30ml + 리필 및 추가 증정 포함 총 73ml 대용량",
+        feature: "노화로 인해 세로로 길어진 모공 주변의 콜라겐 기둥을 촘촘하게 세워주는 콜라겐 캡슐 & 12종 펩타이드 탄력 세럼.",
+        salesPitch: "“탄력이 떨어져 눈물 모양으로 처진 세로 모공엔 콜라겐 기둥을 세워주는 리모델링 세럼이 정답입니다! 총 73ml 대용량 기획이에요.”",
+        rival: "아이오페 레티놀 슈퍼 바운스 세럼 (레티놀 성분이 부담스러운 낮 시간대나 민감 피부 모공 탄력용으로 바이오힐보 추천)",
+        synergy: "바이오힐보 프로바이오덤 3D 리프팅 크림과 최고의 궁합"
+      },
+      {
+        id: "ela_4", shop: "elasticity", brand: "바이오힐보", code: "2602",
+        name: "바이오힐보 프로바이오덤™ 3D 리프팅 크림 마스크 5매 (+1매) (2602) (총6매)",
+        tag: "3D 리프팅 크림 고영양 코팅 + 고탄성 텐션 시트",
+        gift: "본품 5매 + 1매 추가 증정 (총 6매)",
+        feature: "3D 리프팅 크림의 진한 영양을 신축성 뛰어난 특수 탄성 시트에 코팅해 턱선부터 볼까지 물리적으로 끌어올려 고정하는 리프팅 팩.",
+        salesPitch: "“턱선을 위로 쫙 당겨서 붙여주는 텐션 시트라 떼어낸 직후 얼굴 라인이 정돈되는 게 눈에 보입니다! 5+1매 구성이에요.”",
+        rival: "바이오던스 바이오 콜라겐 리얼 딥 마스크 (즉각적인 20분 텐션 리프팅은 바이오힐보 / 3시간 이상 수면 겔 흡수는 바이오던스)",
+        synergy: "바이오힐보 3D 리프팅 크림과 주 2회 집중 케어"
+      },
+      {
+        id: "ela_5", shop: "elasticity", brand: "셀리맥스", code: "2611",
+        name: "셀리맥스 더 비타 A 레티날 샷 타이트닝 부스터 15ml 기획 (+3ml*2ea) (2611)",
+        tag: "차세대 레티날 0.1% + 16만개 미세 스피큘 샷",
+        gift: "본품 15ml + 미니 튜브 3ml * 2개 증정 (총 21ml)",
+        feature: "레티놀보다 피부 전환 속도가 훨씬 빠른 '레티날(Retinal)' 0.1%와 미세 침 스피큘(A-Shot™)을 결합해 늘어진 모공과 깊은 주름을 타이트닝.",
+        salesPitch: "“일반 레티놀보다 한 단계 더 강력한 차세대 레티날에 미세 스피큘을 더했습니다! 모공과 잔주름 부위에 콕콕 흡수되어 확실한 타이트닝을 선사해요.”",
+        rival: "아이오페 레티놀 레티젝션 세럼 (고함량 레티날 0.1%의 강력한 스팟 타이트닝 부스터를 찾는다면 셀리맥스 레티날 샷 추천)",
+        synergy: "셀리맥스 레티날 샷 도포 후 → 수분상점의 '셀리맥스 노니 앰플' 또는 '3D 리프팅 크림'으로 마무리"
+      },
+      {
+        id: "ela_6", shop: "elasticity", brand: "바이오던스", code: "2611",
+        name: "바이오던스 포어 퍼펙팅 콜라겐 펩타이드 크림 50ml 기획 (+10ml+세럼 10ml) (2611)",
+        tag: "243Da 초저분자 콜라겐 + 10종 펩타이드 모공탄력",
+        gift: "본품 50ml + 미니 크림 10ml + 콜라겐 세럼 10ml 증정",
+        feature: "243달톤(Da) 초저분자 콜라겐과 10종 펩타이드가 모공 벽을 탄탄하게 채워 매끈하고 탱글한 피부 결을 완성하는 모공 탄력 크림.",
+        salesPitch: "“무겁지 않고 실키하게 밀착되면서 모공 탄력을 꽉 잡아주는 콜라겐 크림! 세럼 10ml까지 함께 들어있어 라인 체험용으로 최고입니다.”",
+        rival: "바이오힐보 3D 리프팅 크림 (꾸덕한 영양감보다 매끄럽고 탱글한 수분 콜라겐 탄력감을 선호할 때 바이오던스 추천)",
+        synergy: "바이오던스 포어 퍼펙팅 콜라겐 펩타이드 세럼 + 바이오 콜라겐 딥 마스크"
+      },
+      {
+        id: "ela_7", shop: "elasticity", brand: "바이오던스", code: "2611",
+        name: "바이오던스 포어 퍼펙팅 콜라겐 펩타이드 세럼 30ml 리필기획 (+수면양말) (2611)",
+        tag: "초저분자 콜라겐 + 엘라스틴 모공 코어 세럼",
+        gift: "본품 30ml + 리필 30ml(총 60ml) + 핑크 수면양말 증정",
+        feature: "초저분자 콜라겐 추출물과 엘라스틴·펩타이드 성분이 느슨해진 모공 코어를 쫀쫀하게 조여주는 탄력 광채 세럼.",
+        salesPitch: "“1+1 리필 구성에 포근한 수면양말까지! 바이오던스 콜라겐 팩 붙이기 전에 이 세럼을 먼저 바르면 모공 탄력 효과가 2배로 올라갑니다.”",
+        rival: "바이오힐보 콜라겐 리모델링 세럼 (매끈하게 쫙 달라붙는 콜라겐 물광 제형을 원한다면 바이오던스 선택)",
+        synergy: "바이오던스 바이오 콜라겐 리얼 딥 마스크 부착 전 부스팅 세럼"
+      },
+      {
+        id: "ela_8", shop: "elasticity", brand: "바이오던스", code: "2611",
+        name: "바이오던스 바이오 콜라겐 리얼 딥 마스크 7매 기획 (+PDRN 1매+ 무드등 키링) (2611)",
+        tag: "243Da 초저분자 콜라겐 투명 수면 하이드로겔 마스크",
+        gift: "바이오 콜라겐 7매 + 캐비어 PDRN 마스크 1매 + 한정판 무드등 키링 증정",
+        feature: "초저분자 콜라겐과 갈락토미세스, 올리고 히알루론산 앰플 34g을 그대로 굳힌 하이드로겔 마스크. 3시간 이상 부착 시 투명해지며 모공·탄력 즉각 개선.",
+        salesPitch: "“글로벌 품절 대란 1위 콜라겐 마스크! 7매 대용량에 신상 캐비어 PDRN 팩 1매, 귀여운 무드등 키링까지 드리는 놓칠 수 없는 기획입니다.”",
+        rival: "아이오페 레티놀 세럼 인 겔 마스크 (레티놀 주름 케어는 아이오페 / 수면팩으로 즐기는 초저분자 콜라겐 모공 리프팅은 바이오던스)",
+        synergy: "바이오던스 콜라겐 세럼·크림 도포 후 마지막 단계에 밀착 부착"
+      },
+      {
+        id: "ela_9", shop: "elasticity", brand: "아이오페", code: "2611",
+        name: "아이오페 레티놀 슈퍼 바운스 세럼 30ml 리필 기획 (2611)",
+        tag: "순수 레티놀 + 레티노이드 4X 멀티 탄력 세럼",
+        gift: "본품 30ml + 정품 용량 리필 30ml (총 60ml 1+1 구성)",
+        feature: "순수 레티놀과 차세대 레티노이드 4종 복합체가 적응 기간 없이 피부 표층부터 심층까지 4중 탄력을 채워주는 아이오페 대표 탄력 세럼.",
+        salesPitch: "“레티놀 명가 아이오페의 베스트셀러! 각질 부각이나 따가움 걱정 없이 매일 아침저녁 바를 수 있는 고효능 탄력 세럼 1+1 리필 기획입니다.”",
+        rival: "셀리맥스 레티날 샷 부스터 (자극 없이 부드럽고 깊은 전방위 탄력·주름 케어를 원한다면 아이오페 슈퍼 바운스가 정답)",
+        synergy: "아이오페 레티놀 세럼 인 겔 마스크와 함께 사용"
+      },
+      {
+        id: "ela_10", shop: "elasticity", brand: "아이오페", code: "2511",
+        name: "아이오페 레티놀 레티젝션 세럼 30ml 기획 (+25ml) (2511)",
+        tag: "300만개 콜라겐 스피큘 + 순수 레티놀 침투 세럼",
+        gift: "본품 30ml + 추가 증정 25ml (총 55ml 본품 2병급 용량)",
+        feature: "콜라겐 스피큘(미세 침) 내부에 레티놀을 담아 피부 코어까지 빠르고 깊게 침투시키는 고기능성 슬로우에이징 세럼.",
+        salesPitch: "“클리닉 케어 원리를 적용한 스피큘 레티놀 세럼! 본품 30ml에 25ml를 추가로 드려 가성비까지 완벽하게 챙긴 기획입니다.”",
+        rival: "셀리맥스 레티날 샷 부스터 (콜라겐 스피큘과 수분감 있는 세럼 제형의 조화를 원한다면 아이오페 레티젝션 추천)",
+        synergy: "아이오페 스템3 클리니컬 리커버리 세럼으로 장벽 보호 레이어링"
+      },
+      {
+        id: "ela_11", shop: "elasticity", brand: "아이오페", code: "2604",
+        name: "아이오페 스템3 클리니컬 리커버리 세럼 23ml 기획 (+세럼 15ml+크림 5ml) (2604)",
+        tag: "알란토-리포솜™ 피부 장벽·탄력 리커버리",
+        gift: "본품 23ml + 세럼 15ml + 스템3 크림 5ml 증정",
+        feature: "초미세 알란토-리포솜™ 기술로 수면 부족과 외부 자극에 지친 피부 장벽과 탄력 컨디션을 3시간 더 푹 잔 듯 끌어올리는 리커버리 세럼.",
+        salesPitch: "“피부가 예민해져서 고기능성 레티놀이 부담스러운 날이나, 탄력과 장벽 리페어를 동시에 원하시는 고객님께 최고의 만족도를 드립니다.”",
+        rival: "바이오힐보 콜라겐 리모델링 세럼 (모공 타이트닝보다 손상 장벽 복원과 안티에이징 영양에 집중할 때 스템3 추천)",
+        synergy: "아이오페 레티놀 슈퍼 바운스 세럼과 교차 또는 레이어링 사용"
+      },
+      {
+        id: "ela_12", shop: "elasticity", brand: "아이오페", code: "4+1기획",
+        name: "아이오페 레티놀 세럼 인 겔 마스크 4매 기획 (+1매)",
+        tag: "레티놀 슈퍼 바운스 세럼 응축 하이드로겔 마스크",
+        gift: "본품 4매 + 1매 추가 증정 (총 5매 구성)",
+        feature: "레티놀 슈퍼 바운스 세럼의 핵심 탄력 성분을 투피스 하이드로겔 마스크에 그대로 담아 즉각적인 쿨링과 탄력 밀착감을 부여.",
+        salesPitch: "“중요한 약속 전날 붙이면 다음 날 피부 탱탱함이 다릅니다! 4+1매 기획으로 주 1~2회 럭셔리 레티놀 홈케어를 즐겨보세요.”",
+        rival: "이니스프리 레티놀 시카 하이드로겔 마스크 (깊은 주름·탄력 케어는 아이오페 / 트러블 흔적·모공 진정은 이니스프리)",
+        synergy: "아이오페 레티놀 슈퍼 바운스 세럼 도포 후 부착"
+      },
+      {
+        id: "ela_13", shop: "elasticity", brand: "이니스프리", code: "기획세트",
+        name: "이니스프리 레티놀 시카 모공 흔적 크림 50ml 기획 (+30ml)",
+        tag: "순수 레티놀 + 제주 시카 리포좀 모공·흔적 크림",
+        gift: "본품 50ml + 추가 증정 30ml (총 80ml 대용량)",
+        feature: "순수 레티놀의 모공·각질 정돈 효과와 제주 시카의 진정 장벽 케어를 결합해 트러블 흔적과 늘어진 모공을 순하게 잡아주는 수분 젤 크림.",
+        salesPitch: "“레티놀 크림인데도 수분크림처럼 산뜻하고 순해서 매일 바르기 좋아요! 30ml 대용량 추가 증정이라 앰플과 짝꿍으로 쓰기 딱입니다.”",
+        rival: "바이오던스 콜라겐 펩타이드 크림 (트러블·좁쌀이 자주 나는 지복합성 모공 탄력 크림으로는 이니스프리 레티놀 시카가 최적)",
+        synergy: "이니스프리 레티놀 시카 모공 흔적 앰플 다음 단계에 사용"
+      },
+      {
+        id: "ela_14", shop: "elasticity", brand: "이니스프리", code: "2611",
+        name: "이니스프리 레티놀 시카 모공 흔적 앰플 30ml 더블 기획 (+겔 마스크 1매) (2611)",
+        tag: "저자극 데일리 레티놀 + 시카 모공·트러블흔적 앰플",
+        gift: "본품 30ml + 30ml 더블(총 60ml) + 레티놀 시카 겔 마스크 1매 증정",
+        feature: "제주 시카 리포좀 기술로 레티놀의 자극을 낮춰 갓 올라온 트러블 요철부터 모공 탄력, 거뭇한 흔적까지 데일리로 케어하는 수분 앰플.",
+        salesPitch: "“레티놀 처음 쓰시는 입문자 1위 앰플! 1+1 더블 용량에 하이드로겔 마스크팩까지 함께 들어있어 가성비가 정말 뛰어납니다.”",
+        rival: "아이오페 레티놀 슈퍼 바운스 세럼 (2030 수부지·트러블 모공 고민엔 이니스프리 / 3040 본격 탄력·주름 고민엔 아이오페)",
+        synergy: "이니스프리 레티놀 시카 모공 흔적 크림 + 하이드로겔 마스크"
+      },
+      {
+        id: "ela_15", shop: "elasticity", brand: "이니스프리", code: "2611",
+        name: "이니스프리 레티놀 그린티 피디알엔 스킨부스터 앰플 25ml 더블 기획 (2611)",
+        tag: "3중 레티놀 + 제주 그린티 PDRN™ 56% 모공·속광 부스터",
+        gift: "본품 25ml + 25ml 1+1 더블 세트 (총 50ml)",
+        feature: "정제수 대신 저분자 비건 '그린티 PDRN™' 56%와 3중 레티놀 콤플렉스를 배합해 겉모공 탄력과 속광 장벽을 동시에 부스팅하는 고효능 앰플.",
+        salesPitch: "“레티놀 시카 앰플보다 한 단계 더 쫀쫀한 모공 탄력과 속광을 원하신다면 그린티 PDRN이 결합된 이 부스터 더블 기획을 선택하세요!”",
+        rival: "VT 피디알엔 에센스 100 (PDRN에 레티놀 모공 타이트닝 효과까지 한 병으로 챙기고 싶을 때 이니스프리 추천)",
+        synergy: "이니스프리 레티놀 시카 모공 흔적 크림과 함께 사용"
+      },
+      {
+        id: "ela_16", shop: "elasticity", brand: "이니스프리", code: "4매입",
+        name: "이니스프리 레티놀 시카 앰플 인 하이드로겔 마스크 4매",
+        tag: "레티놀 시카 쿨링 진정 + 모공 수렴 하이드로겔 마스크",
+        gift: "고농축 앰플 하이드로겔 마스크 4매입 본품 세트",
+        feature: "레티놀 시카 앰플의 핵심 성분을 탱글한 하이드로겔 시트에 담아 피부 열감을 즉각 낮추고 거친 모공결을 매끈하게 정돈.",
+        salesPitch: "“피부가 붉게 달아오르거나 모공이 유독 넓어 보이는 날 20분만 붙여두면 진정과 모공 조임이 한 번에 해결됩니다!”",
+        rival: "바이오던스 바이오 콜라겐 리얼 딥 마스크 (산뜻하고 진정력 높은 모공 겔팩을 찾는 지성·트러블 피부에게 추천)",
+        synergy: "이니스프리 레티놀 시카 모공 흔적 앰플 도포 후 부착"
+      },
+
+      // 4. 화사해지는 미백상점 (달바 4종 + 셀리맥스 브라이트닝 트라넥삼산 2종 = 6종)
+      {
+        id: "whi_1", shop: "whitening", brand: "달바", code: "2606",
+        name: "달바 비타 토닝 캡슐 세럼 나이아신아마이드 5퍼센트 100ml 기획 (+토너 2.4ml+ 세럼 1.5ml+크림 1.5g) (2606)",
+        tag: "나이아신아마이드 5% + 비타민나무수 + 2만개 비타캡슐",
+        gift: "100ml 대용량 본품 + 비타 토닝 3종 샘플 키트(토너+세럼+크림) 증정",
+        feature: "미백상점 캐릭터가 들고 있는 노란 비타 세럼! 식약처 미백 고시 최고 수준인 나이아신아마이드 5%와 비타민 캡슐이 기미·잡티와 칙칙한 피부톤을 환하게 밝혀줌.",
+        salesPitch: "“일반 세럼 3병 용량인 100ml 대용량에 나이아신아마이드 5%가 꽉 차 있어 자극 없이 맑고 생기 있는 피부로 가꿔줍니다!”",
+        rival: "셀리맥스 브라이트닝 모공잡티크림 (얼굴 전체의 칙칙한 톤업과 수분 광채 세럼은 달바 / 국소 부위 짙은 색소모공 크림은 셀리맥스)",
+        synergy: "달바 비타 토닝 캡슐 크림 5%와 세트로 바르면 미백·광채 시너지 극대화"
+      },
+      {
+        id: "whi_2", shop: "whitening", brand: "달바", code: "2611",
+        name: "달바 비타 토닝 캡슐 크림 나이아신아마이드 5퍼센트 55g 더블 기획 (2611)",
+        tag: "나이아신아마이드 5% + 비타민·글루타치온 캡슐 크림",
+        gift: "본품 55g + 본품 55g 정품 1+1 더블 세트 (총 110g)",
+        feature: "수분감 풍부한 크림 속에 비타민·글루타치온 캡슐이 담겨 있어 롤링 시 부드럽게 녹아들며 속부터 투명한 미백 윤기를 채워주는 크림.",
+        salesPitch: "“나이아신아마이드 5% 고함량 미백 캡슐 크림이 무려 본품 1+1 더블 구성입니다! 비타 캡슐 세럼과 함께 쓰시면 안색이 확 살아나요.”",
+        rival: "셀리맥스 브라이트닝 모공잡티크림 (촉촉한 비타민 캡슐 제형과 화사한 수분 톤업을 선호한다면 달바 캡슐 크림 추천)",
+        synergy: "달바 비타 토닝 캡슐 세럼 5% + 워터풀 톤업 선크림"
+      },
+      {
+        id: "whi_3", shop: "whitening", brand: "달바", code: "더블기획",
+        name: "달바 화이트 트러플 퍼스트 스프레이 세럼 펩타이드 100ml 더블기획",
+        tag: "화이트 트러플 + 나이아신아마이드 미백·광채 스프레이 세럼",
+        gift: "본품 100ml + 본품 100ml 1+1 더블 세트 (총 200ml)",
+        feature: "이탈리아 화이트 트러플과 토코페롤, 나이아신아마이드, 펩타이드가 결합된 미백·주름개선 2중 기능성 오일-세럼 안개분사 미스트.",
+        salesPitch: "“칙칙하고 푸석한 피부에 뿌리는 즉시 조명을 켠 듯 맑은 윤광을 만들어주는 국민 미스트 1+1 기획입니다!”",
+        rival: "메디큐브 PDRN 핑크 젤리 미스트 (가벼운 안개분사와 고급스러운 아로마 오일 보습광을 원한다면 달바 선택)",
+        synergy: "달바 비타 토닝 캡슐 세럼 전후 및 메이크업 위 수시 분사"
+      },
+      {
+        id: "whi_4", shop: "whitening", brand: "달바", code: "더블기획",
+        name: "달바 워터풀 톤업 선크림 50ml 더블기획",
+        tag: "칙칙한 안색 즉시 보정 복숭아빛 물광 톤업 선크림",
+        gift: "본품 50ml + 본품 50ml 1+1 더블 구성 (총 100ml)",
+        feature: "자외선 차단(SPF50+ PA++++)은 기본, 노랗고 칙칙한 피부톤을 백탁 없이 자연스러운 복숭아빛 생기 피부로 즉시 밝혀주는 파데프리 톤업 선크림.",
+        salesPitch: "“미백 스킨케어의 완성은 자외선 차단과 즉각적인 톤업이죠! 파운데이션 없이도 맑고 화사한 피부를 만들어주는 올리브영 1위 톤업선 1+1 기획입니다.”",
+        rival: "넘버즈인 3번 결 화잘먹 로션 (로션 다음 단계에 달바 워터풀 톤업 선크림을 바르면 완벽한 꾸안꾸 베이스 완성)",
+        synergy: "달바 비타 토닝 캡슐 세럼·크림으로 기초 케어 후 아침 마무리 단계에 도포"
+      },
+      {
+        id: "whi_5", shop: "whitening", brand: "셀리맥스", code: "2611",
+        name: "셀리맥스 브라이트닝 모공잡티크림 35ml 기획 (+7ml+세럼 10ml) (2611)",
+        tag: "트라넥삼산 + 나이아신아마이드 5% 기미·모공잡티 집중케어",
+        gift: "본품 35ml + 추가 크림 7ml + 브라이트닝 모공잡티 세럼 10ml 증정",
+        feature: "기미·색소침착 케어의 핵심 성분인 '트라넥삼산'과 '나이아신아마이드 5%'를 고함량 배합해 거뭇하게 착색된 멜라닌 모공과 짙은 잡티 흔적을 집중 케어하는 크림.",
+        salesPitch: "“모공을 조여도 피부가 칙칙해 보인다면 모공 입구가 착색된 '까만 모공잡티' 때문입니다! 트라넥삼산과 나이아신아마이드 5%가 기미부터 거뭇한 모공까지 환하게 밝혀줍니다.”",
+        rival: "달바 비타 토닝 캡슐 크림 (달바가 비타민 수분 광채 톤업이라면, 셀리맥스는 트라넥삼산 기반의 짙은 기미·색소침착 모공 집중 타겟)",
+        synergy: "증정된 브라이트닝 세럼 도포 후 → 모공잡티크림 → 브라이트닝 랩핑 마스크"
+      },
+      {
+        id: "whi_6", shop: "whitening", brand: "셀리맥스", code: "5+1기획",
+        name: "셀리맥스 모공잡티 브라이트닝 크림 랩핑 마스크 5매 기획 (+1매)",
+        tag: "트라넥삼산 + 나이아신아마이드 미백크림 응축 랩핑 시트",
+        gift: "본품 5매 + 1매 추가 증정 (총 6매 구성)",
+        feature: "트라넥삼산과 나이아신아마이드가 담긴 브라이트닝 모공잡티크림의 유효 성분을 증발 없이 피부 깊숙이 밀폐 흡수시키는 특수 크림 코팅 랩핑 마스크.",
+        salesPitch: "“크림이 겉으로 묻어나거나 흐르지 않는 랩핑 시트라 붙이고 활동하기 너무 편해요! 떼어낸 직후 모공 주변의 칙칙한 잡티 톤이 한 단계 맑아집니다.”",
+        rival: "바이오힐보 3D 리프팅 크림 마스크 (바이오힐보가 턱선 리프팅 크림 시트라면, 셀리맥스는 트라넥삼산 미백·모공잡티 토닝 크림 시트)",
+        synergy: "셀리맥스 브라이트닝 모공잡티크림을 고민 부위에 한 번 더 바른 뒤 랩핑 마스크 부착"
+      }
+    ];
+
+    /* ==========================================================
+       7. 광장 -> 상점 걸어가는 모션 & 상점 페이지 렌더링
+    ========================================================== */
+    let isWalking = false;
+    let currentShopId = 'texture';
+    let isSheetMaskPose = false;
+
+    function toggleTextureSheetPose() {
+      if (currentShopId !== 'texture') return;
+      SoundFX.playPop();
+      isSheetMaskPose = !isSheetMaskPose;
+      const A = window.EMBEDDED_ASSETS;
+      const charImg = document.getElementById('shop-held-char-img');
+      const quoteEl = document.getElementById('shop-char-quote');
+      const btn = document.getElementById('btn-toggle-sheet-pose');
+
+      if (isSheetMaskPose) {
+        charImg.src = A.heldTextureSheet;
+        quoteEl.innerText = '“시트로 집중케어 ♡”';
+        btn.innerText = '✨ 3번 패드 들고 있는 포즈 보기';
+      } else {
+        charImg.src = A.heldTexture;
+        quoteEl.innerText = '“모공도 잡고 화잘먹! ♡”';
+        btn.innerText = '✨ 시트팩 집중케어 포즈 보기';
+      }
+    }
+
+    function walkToShop(shopId) {
+      if (isWalking) return;
+      isWalking = true;
+      currentShopId = shopId;
+
+      const meta = SHOPS_META[shopId];
+      const A = window.EMBEDDED_ASSETS;
+      const charWrap = document.getElementById('plaza-char-wrap');
+      const charImg = document.getElementById('plaza-char-img');
+      const dust = document.getElementById('footstep-dust');
+      const speechTitle = document.getElementById('main-speech-title');
+      const speechSub = document.getElementById('main-speech-sub');
+      const targetShop = document.getElementById('walk-target-shop');
+      const targetShopImg = document.getElementById('walk-target-shop-img');
+
+      speechTitle.innerText = meta.walkReply;
+      speechSub.innerText = "문을 열고 상점으로 들어갑니다! 딸랑~ 🔔";
+      SoundFX.playWind();
+
+      targetShopImg.src = A[meta.shopAssetKey];
+      targetShop.classList.remove('hidden');
+
+      // 옆모습으로 걸어가기
+      charImg.src = A.charWalk;
+      charImg.classList.remove('animate-idle');
+      charImg.classList.add('animate-walk');
+      dust.classList.remove('hidden');
+
+      charWrap.style.transform = 'translateX(105px) scale(0.92)';
+      SoundFX.playFootstepSequence(5, 200);
+
+      // 상점 앞에서 뒷모습으로 전환 후 문 여는 소리 + 종소리
+      setTimeout(() => {
+        charImg.src = A.charBack;
+        charImg.classList.remove('animate-walk');
+        dust.classList.add('hidden');
+        SoundFX.playDoorAndBell();
+      }, 1020);
+
+      // 상점 페이지 전환
+      setTimeout(() => {
+        renderShopInterior(shopId);
+        document.getElementById('page-square').classList.add('hidden');
+        document.getElementById('page-shop').classList.remove('hidden');
+        document.getElementById('btn-back-square').classList.remove('hidden');
+        document.getElementById('btn-back-square').classList.add('flex');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // 광장 초기화
+        charWrap.style.transform = 'translateX(0px) scale(1)';
+        charImg.src = A.charFront;
+        charImg.classList.add('animate-idle');
+        targetShop.classList.add('hidden');
+        speechTitle.innerText = "“지금 나의 고민은?”";
+        speechSub.innerText = "아래 4가지 고민 중 하나를 누르면 상점으로 걸어갑니다!";
+        isWalking = false;
+      }, 1580);
+    }
+
+    function switchShopDirect(shopId) {
+      currentShopId = shopId;
+      SoundFX.playDoorAndBell();
+      renderShopInterior(shopId);
+    }
+
+    function returnToSquare() {
+      SoundFX.playWind();
+      SoundFX.playFootstepSequence(3, 190);
+      document.getElementById('page-shop').classList.add('hidden');
+      document.getElementById('page-square').classList.remove('hidden');
+      document.getElementById('btn-back-square').classList.add('hidden');
+      document.getElementById('btn-back-square').classList.remove('flex');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderShopInterior(shopId) {
+      const meta = SHOPS_META[shopId];
+      const A = window.EMBEDDED_ASSETS;
+      const list = PRODUCTS.filter(p => p.shop === shopId);
+      isSheetMaskPose = false;
+
+      // 상단 탭 활성화 표시
+      ['texture', 'moisture', 'elasticity', 'whitening'].forEach(id => {
+        const tab = document.getElementById(`tab-${id}`);
+        if (id === shopId) {
+          tab.className = 'shop-tab whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-black border-2 bg-[#4A3423] text-[#FDE47F] border-[#4A3423] shadow-sm transition';
+        } else {
+          tab.className = 'shop-tab whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-black border-2 bg-[#F8F2E4] text-[#8C6D46] border-[#DFCFAF] hover:bg-[#FDE47F]/30 transition';
+        }
+      });
+
+      // 왼쪽(모바일 위): 상점 이미지
+      document.getElementById('shop-scene-img').src = A[meta.shopAssetKey];
+      document.getElementById('shop-scene-badge').innerText = meta.pillText;
+
+      // 오른쪽(모바일 아래): 대표 화장품 들고 있는 투명 배경 캐릭터
+      document.getElementById('shop-held-char-img').src = A[meta.heldAssetKey];
+      document.getElementById('shop-char-quote').innerText = meta.quote;
+      document.getElementById('shop-char-dialogue').innerText = meta.dialogue;
+      document.getElementById('shop-held-item-caption').innerText = meta.heldCaption;
+
+      // 1번 피부결 상점일 때 시트팩 포즈 전환 버튼 노출
+      const sheetPoseBtn = document.getElementById('btn-toggle-sheet-pose');
+      if (shopId === 'texture') {
+        sheetPoseBtn.classList.remove('hidden');
+        sheetPoseBtn.innerText = '✨ 시트팩 집중케어 포즈 보기';
+      } else {
+        sheetPoseBtn.classList.add('hidden');
+      }
+
+      // 하단 상품 목록 (예시 이미지 image_010aa5.png와 100% 동일한 블럭 구조)
+      document.getElementById('shop-product-count').innerText = `총 ${list.length}종`;
+      const container = document.getElementById('product-blocks-list');
+      container.innerHTML = '';
+
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'product-text-block';
+        card.onclick = () => openProductModal(item);
+
+        card.innerHTML = `
+          <div class="product-pill-badge">${meta.pillText}</div>
+          <h3 class="product-block-title">${item.name}</h3>
+          <div class="product-block-subtitle">트렌드 성분: ${item.tag}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openComparisonModal() {
+      SoundFX.playPop();
+      const modal = document.getElementById('comparison-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeComparisonModal() {
+      SoundFX.playPop();
+      const modal = document.getElementById('comparison-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    document.getElementById('comparison-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'comparison-modal') closeComparisonModal();
+    });
+
+    function openProductModal(item) {
+      SoundFX.playPop();
+      const meta = SHOPS_META[item.shop];
+      document.getElementById('modal-pill').innerText = meta.pillText;
+      document.getElementById('modal-title').innerText = item.name;
+      document.getElementById('modal-subtitle').innerText = `트렌드 성분: ${item.tag}`;
+      document.getElementById('modal-gift').innerText = item.gift;
+      document.getElementById('modal-feature').innerText = item.feature;
+      document.getElementById('modal-pitch').innerText = item.salesPitch;
+      document.getElementById('modal-rival').innerText = item.rival;
+      document.getElementById('modal-synergy').innerText = item.synergy;
+
+      const modal = document.getElementById('product-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeProductModal() {
+      SoundFX.playPop();
+      const modal = document.getElementById('product-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    document.getElementById('product-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'product-modal') closeProductModal();
+    });
+
+    function createFallingLeaves() {
+      const container = document.getElementById('leaves-container');
+      const icons = ['🍃', '🍂', '🌸', '🌿', '🌼'];
+      for (let i = 0; i < 12; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'falling-leaf text-base sm:text-lg';
+        leaf.innerText = icons[i % icons.length];
+        leaf.style.left = `${Math.random() * 92}vw`;
+        leaf.style.top = `${-10 - Math.random() * 20}vh`;
+        leaf.style.animationDuration = `${9 + Math.random() * 8}s`;
+        leaf.style.animationDelay = `${Math.random() * 7}s`;
+        container.appendChild(leaf);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initDefaultEmbeddedAssets();
+      applyAssetsToDOM();
+      autoLoadSameFolderImages();
+      createFallingLeaves();
+    });
+  </script>
+</body>
+</html>
